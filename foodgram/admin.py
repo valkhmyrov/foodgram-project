@@ -1,14 +1,11 @@
 from django.contrib import admin
-from django import forms
-from .models import Tag, Recipe, Ingredient, QuantityOfIngredient
 
-
-#class FoodgramTagForm(forms.ModelForm):
+from .models import Ingredient, QuantityOfIngredient, Recipe, Tag
 
 
 # Завписать теги
 class FoodgramRecipe(admin.ModelAdmin):
-    list_display = ['title', 'author', 'text', 'time']
+    list_display = ['title', 'author', 'text', 'time', 'pub_date', ]
     search_fields = ('title',)
     list_filter = ('author',)
     empty_value_display = '-пусто-'
@@ -17,7 +14,7 @@ class FoodgramRecipe(admin.ModelAdmin):
     #    return obj.tag__name
 
 class FoodgramTag(admin.ModelAdmin):
-    list_display = ['tag', ]
+    list_display = ['title', 'checkbox_style']
     empty_value_display = '-пусто-'
 
 
@@ -27,6 +24,6 @@ class FoodgramDimensionOfIngredient(admin.ModelAdmin):
     empty_value_display = '-пусто-'
 
 admin.site.register(Tag, FoodgramTag)
-admin.site.register(Recipe)
+admin.site.register(Recipe, FoodgramRecipe)
 admin.site.register(Ingredient)
 admin.site.register(QuantityOfIngredient)

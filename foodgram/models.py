@@ -1,22 +1,21 @@
-from django.db import models
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator
+from django.db import models
 from django.db.models.deletion import CASCADE
-
 
 User = get_user_model()
 
 
 class Tag(models.Model):
-    MEAL = (
-        ('B', 'Завтрак'),
-        ('D', 'Обед'),
-        ('S', 'Ужин')
-    )
-    tag = models.CharField(max_length=1, choices=MEAL)
+    title = models.CharField(max_length=30, verbose_name='Наименование тега', unique=True)
+    checkbox_style = models.CharField(max_length=30)
+
+    class Meta:
+        verbose_name = 'тег'
+        verbose_name_plural = 'теги'
 
     def __str__(self):
-        return self.get_tag_display()
+        return self.title
 
 
 class Ingredient(models.Model):
@@ -33,9 +32,10 @@ class Recipe(models.Model):
     image = models.ImageField('Изображение', upload_to='foodgram_images/', help_text='Изображение')
     text = models.TextField('Текст рецепта', help_text='Текст рецепта')
     ingredients = models.ManyToManyField(Ingredient, through='QuantityOfIngredient')
-    tag = models.ManyToManyField(Tag, verbose_name='Тег', related_name='Recipe')
+    tags = models.ManyToManyField(Tag, verbose_name='Тег', related_name='Recipe')
     time = models.IntegerField('Время приготовления', validators=[MaxValueValidator(1440)], help_text='Время приготовления')
     slug = models.SlugField(unique=True, help_text='Идентификатор рецепта')
+    pub_date = models.DateTimeField('date published', auto_now_add=True)
 
     def __str__(self):
         return self.title[0:30]

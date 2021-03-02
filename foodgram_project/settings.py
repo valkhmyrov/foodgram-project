@@ -14,6 +14,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'sorl.thumbnail',
     'foodgram',
 ]
 
@@ -85,3 +86,12 @@ STATIC_ROOT = Path(BASE_DIR).joinpath('static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = Path(BASE_DIR).joinpath('media')
+
+LOGIN_URL = '/auth/login/'
+LOGIN_REDIRECT_URL = 'index'
+LOGOUT_REDIRECT_URL = 'login'
+
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
+
+PAGINATOR_ITEMS = 6

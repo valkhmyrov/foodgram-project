@@ -1,0 +1,12 @@
+{% load recipe_filters %}
+{% with filter_tag=request|get_list:'filter' %}
+<ul class="tags">
+    {% for tag in tags %}
+        <li class="tags__item">
+            <a id="{{ tag.id }}" class="tags__checkbox tags__checkbox_style_{{ tag.checkbox_style }}
+            {% if tag.title in filter_tag %} tags__checkbox_active {% endif %}" href="?{{request|filter_manager:tag}}"></a>
+            <span class="tags__label">{{ tag.title }}</span>
+        </li>
+    {% endfor %}
+{% endwith %}
+</ul>
