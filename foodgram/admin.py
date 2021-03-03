@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Ingredient, QuantityOfIngredient, Recipe, Tag
+from .models import Ingredient, QuantityOfIngredient, Recipe, Tag, Follow
 
 
 # Завписать теги
@@ -27,3 +27,4 @@ admin.site.register(Tag, FoodgramTag)
 admin.site.register(Recipe, FoodgramRecipe)
 admin.site.register(Ingredient)
 admin.site.register(QuantityOfIngredient)
+admin.site.register(Follow)

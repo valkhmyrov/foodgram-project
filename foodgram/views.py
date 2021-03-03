@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, render, get_object_or_404
-from .models import Recipe, Tag
+from .models import Recipe, Tag, Follow
 from django.conf import settings
 from django.core.paginator import Paginator
 from django.urls import reverse
@@ -24,8 +24,6 @@ def index(request):
         'author'
     ).prefetch_related(
         'tags'
-    ).order_by(
-        '-pub_date'
     )
     paginator = Paginator(recipes_list, settings.PAGINATOR_ITEMS)
     page_number = request.GET.get('page')
@@ -56,8 +54,6 @@ def profile(request, username):
         'author'
     ).prefetch_related(
         'tags'
-    ).order_by(
-        '-pub_date'
     )
     paginator = Paginator(recipes_list, settings.PAGINATOR_ITEMS)
     page_number = request.GET.get('page')
@@ -71,7 +67,11 @@ def profile(request, username):
     return render(request, 'foodgram/profile.html', context)
 
 
-
-
-
-
+@login_required
+def follow_index(request):
+    authors = request.user.follower.all()
+    paginator = Paginator(authors, settings.PAGINATOR_ITEMS)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+    context = {'page': page, 'paginator': paginator}
+    return render(request, 'foodgram/follow.html', context)

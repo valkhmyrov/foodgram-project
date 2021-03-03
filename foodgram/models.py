@@ -3,6 +3,7 @@ from django.core.validators import MaxValueValidator
 from django.db import models
 from django.db.models.deletion import CASCADE
 
+
 User = get_user_model()
 
 
@@ -10,12 +11,12 @@ class Tag(models.Model):
     title = models.CharField(max_length=30, verbose_name='Наименование тега', unique=True)
     checkbox_style = models.CharField(max_length=30)
 
-    class Meta:
-        verbose_name = 'тег'
-        verbose_name_plural = 'теги'
+    #class Meta:
+    #    verbose_name = 'тег'
+    #    verbose_name_plural = 'теги'
 
     def __str__(self):
-        return self.title
+        return self.title[0:15]
 
 
 class Ingredient(models.Model):
@@ -37,6 +38,9 @@ class Recipe(models.Model):
     slug = models.SlugField(unique=True, help_text='Идентификатор рецепта')
     pub_date = models.DateTimeField('date published', auto_now_add=True)
 
+    class Meta:
+        ordering = ['-pub_date']
+
     def __str__(self):
         return self.title[0:30]
 
@@ -45,3 +49,20 @@ class QuantityOfIngredient(models.Model):
     ingredient = models.ForeignKey(Ingredient, on_delete=CASCADE)
     recipe = models.ForeignKey(Recipe, on_delete=CASCADE)
     quantity = models.IntegerField('Количество', help_text='Количество')
+
+
+class Follow(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='follower', help_text='Подписчик')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following', help_text='Публицист')
+
+    class Meta:
+        ordering = ['user', 'author']
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'author'], name='unique together'),
+            ]
+            
+    def __str__(self):
+        user = self.user.username
+        author = self.author.username
+        output = f'user: {user}, author: {author}'
+        return output

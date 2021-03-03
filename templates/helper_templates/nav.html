@@ -4,6 +4,7 @@
 {% url 'index' as index %}
 {% url 'recipe' recipe.slug as recipe %}
 {% url 'profile' author.username as profile %}
+{% url 'follow_index' as follow_index %}
 <header class="header">
         <nav class="nav">
             <div class="nav__container container">
@@ -11,7 +12,8 @@
                     <li class="nav__item {% if request.path == index or request.path == recipe or request.path == profile %} nav__item_active {% endif %}">
                         <a href="{% url 'index' %}" class="nav__link link">Рецепты</a></li>
                     {% if user.is_authenticated %}
-                        <li class="nav__item {% if subs %} nav__item_active {% endif %}"><a href="#" class="nav__link link">Мои подписки</a></li>
+                        <li class="nav__item {% if request.path == follow_index %} nav__item_active {% endif %}">
+                            <a href="{% url 'follow_index' %}" class="nav__link link">Мои подписки</a></li>
                         <li class="nav__item {% if recipe_form %} nav__item_active {% endif %}"><a href="#" class="nav__link link">Создать рецепт</a></li>
                         <li class="nav__item {% if fav %} nav__item_active {% endif %}"><a href="#" class="nav__link link">Избранное</a></li>
                         <li class="nav__item {% if shoplist %} nav__item_active {% endif %}"><a href="#" class="nav__link link">Список покупок</a> 

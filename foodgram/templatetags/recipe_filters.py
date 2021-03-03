@@ -28,3 +28,9 @@ def paginator_manager(request, number):
     return new_request.urlencode()
 
 
+@register.filter
+def recipe_count(request, author):
+    count = author.recipes.count() - 3
+    if count < 1:
+        return False
+    return count
