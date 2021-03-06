@@ -75,3 +75,33 @@ def follow_index(request):
     page = paginator.get_page(page_number)
     context = {'page': page, 'paginator': paginator}
     return render(request, 'foodgram/follow.html', context)
+
+
+@login_required
+def favorite_index(request):
+    tags_all = Tag.objects.all()
+    tags = getting_tags(request, 'filter')
+    if not tags:
+        return redirect(reverse('favorite_index') + setting_all_tags())
+    favorites = request.user.favorite_recipe.filter(recipe__tags__in=tags).distinct().select_related(
+        'recipe'
+    )
+    paginator = Paginator(favorites, settings.PAGINATOR_ITEMS)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+    context = {'page': page, 'paginator': paginator, 'tags': tags_all}
+    return render(request, 'foodgram/favorites.html', context)
+
+
+@login_required
+def subscriptions(request):
+    if request.method == "POST":
+        id = request.POST.get('id')
+        author = get_object_or_404(User, id=id)
+        subscription = Follow(author=author, user=request.user)
+        subscription.save()
+
+
+
+
+

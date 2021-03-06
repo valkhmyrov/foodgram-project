@@ -66,3 +66,8 @@ class Follow(models.Model):
         author = self.author.username
         output = f'user: {user}, author: {author}'
         return output
+
+
+class Favorite(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorite_recipe', help_text='Подписчик')
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='favorite_user')
