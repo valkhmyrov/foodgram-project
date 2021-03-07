@@ -6,5 +6,5 @@ def getting_tags(request, tag_name):
     return tags
 
 def setting_all_tags():
-    get_parameters = '?filter=' + '&filter='.join([x.title for x in Tag.objects.all()])
+    get_parameters = '?filter=' + '&filter='.join(Tag.objects.values_list('title', flat=True))
     return get_parameters

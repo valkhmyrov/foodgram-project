@@ -1,5 +1,5 @@
 from django import template
-from ..models import Tag
+
 
 register = template.Library()
 
@@ -29,8 +29,15 @@ def paginator_manager(request, number):
 
 
 @register.filter
-def recipe_count(request, author):
+def recipe_count(author):
     count = author.recipes.count() - 3
     if count < 1:
         return False
     return count
+
+
+@register.filter
+def check_user(recipe, user):
+    if recipe.favorite_user.filter(user=user):
+        return True
+    return False

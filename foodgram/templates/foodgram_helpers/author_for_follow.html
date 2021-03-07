@@ -14,9 +14,9 @@
                 </div>    
               </li>
             {% endfor %}
-            {% if author.recipes.all|recipe_count:author %}
+            {% if author|recipe_count %}
               <li class="card-user__item">
-                <a href="{% url 'profile' author.username %}" class="card-user__link link">Доступно еще рецептов: {{ recipe|recipe_count:author }}</a>
+                <a href="{% url 'profile' author.username %}" class="card-user__link link">Доступно еще рецептов: {{ author|recipe_count }}</a>
               </li>
             {% endif %}
         </ul>
