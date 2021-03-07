@@ -6,6 +6,7 @@
 {% url 'profile' author.username as profile %}
 {% url 'follow_index' as follow_index %}
 {% url 'favorite_index' as favorite_index %}
+{% url 'shop_list_index' as shop_list_index %}
 <header class="header">
         <nav class="nav">
             <div class="nav__container container">
@@ -16,9 +17,10 @@
                         <li class="nav__item {% if request.path == follow_index %} nav__item_active {% endif %}">
                             <a href="{% url 'follow_index' %}" class="nav__link link">Мои подписки</a></li>
                         <li class="nav__item {% if recipe_form %} nav__item_active {% endif %}"><a href="#" class="nav__link link">Создать рецепт</a></li>
-                        <li class="nav__item {% if favorite_index %} nav__item_active {% endif %}">
+                        <li class="nav__item {% if request.path == favorite_index %} nav__item_active {% endif %}">
                             <a href="{% url 'favorite_index' %}" class="nav__link link">Избранное</a></li>
-                        <li class="nav__item {% if shoplist %} nav__item_active {% endif %}"><a href="#" class="nav__link link">Список покупок</a> 
+                        <li class="nav__item {% if request.path == shop_list_index %} nav__item_active {% endif %}">
+                            <a href="{% url 'shop_list_index' %}" class="nav__link link">Список покупок</a> 
                         {% comment %}
                         <span class="badge badge_style_blue nav__badge" id="counter">{{ user|shopping_count:user.id }}</span></li>
                         {% endcomment %}
@@ -32,8 +34,7 @@
                     {% else %}
                         <li class="nav__item {% if request.path == login %} nav__item_active {% endif %}">
                             <a href="{% url 'login' %}" class="nav__link link">Войти</a></li>
-                        <li class="nav__item {% if request.path == signup %} nav__item_active {% endif %}">
-                            <a href="{% url 'signup' %}" class="button button_style_blue">Создать аккаунт</a></li>
+                        <li class="nav__item"><a href="{% url 'signup' %}"><button class="button button_style_blue">Создать аккаунт</button></a></li>
                     {% endif %}
                 </ul>
             </div>

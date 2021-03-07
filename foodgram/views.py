@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, render, get_object_or_404
-from .models import Recipe, Tag, Follow
+from .models import Recipe, Tag, Follow, ShopList
 from django.conf import settings
 from django.core.paginator import Paginator
 from django.urls import reverse
@@ -37,7 +37,7 @@ def index(request):
 
 
 def recipe_view(request, slug):
-    recipe = get_object_or_404(Recipe, slug=slug)
+    recipe = get_object_or_404(Recipe.objects.prefetch_related('tags'), slug=slug)
     context = {'recipe': recipe}
     return render(request, 'foodgram/recipe.html', context)
 
@@ -83,7 +83,9 @@ def favorite_index(request):
     tags = getting_tags(request, 'filter')
     if not tags:
         return redirect(reverse('favorite_index') + setting_all_tags())
-    favorites = request.user.favorite_recipe.filter(recipe__tags__in=tags).distinct().select_related(
+    favorites = request.user.favorite_recipe.filter(
+        recipe__tags__in=tags
+    ).distinct().select_related(
         'recipe'
     )
     paginator = Paginator(favorites, settings.PAGINATOR_ITEMS)
@@ -91,6 +93,25 @@ def favorite_index(request):
     page = paginator.get_page(page_number)
     context = {'page': page, 'paginator': paginator, 'tags': tags_all}
     return render(request, 'foodgram/favorites.html', context)
+
+
+@login_required
+def shop_list_index(request):
+    shop_list = request.user.shop_list.all().prefetch_related('recipe')
+    #shop_list = {}
+    #for recipe in recipe_list:
+    #    quantity_of_ingredient = recipe.recipe.quantityofingredient_set.all()
+    #    for ingredient in quantity_of_ingredient:
+    #        if ingredient.ingredient in shop_list:
+    #            shop_list[ingredient.ingredient] += ingredient.quantity
+    #        else:
+    #            shop_list[ingredient.ingredient] = ingredient.quantity
+    paginator = Paginator(shop_list, settings.PAGINATOR_ITEMS)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+    context = {'page': page, 'paginator': paginator}
+    return render(request, 'foodgram/shop_list.html', context)
+
 
 
 @login_required
