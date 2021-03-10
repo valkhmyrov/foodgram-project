@@ -1,5 +1,7 @@
 from django import template
 
+from ..models import Tag
+
 
 register = template.Library()
 
@@ -41,3 +43,20 @@ def check_user(recipe, user):
     if recipe.favorite_user.filter(user=user):
         return True
     return False
+
+
+@register.filter()
+def tag_colour(tag_title):
+    color = Tag.objects.filter(title=tag_title).values_list('checkbox_style', flat=True)[0]
+    return color
+
+
+@register.filter()
+def tag_id(tag_title):
+    id = Tag.objects.filter(title=tag_title).values_list('id', flat=True)[0]
+    return id
+
+@register.filter()
+def selected_tag(tag_title, recipe):
+    if tag_title in recipe.tags.values_list('title', flat=True):
+        return True

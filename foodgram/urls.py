@@ -10,5 +10,7 @@ urlpatterns = [
     path('favorites/', views.favorite_index, name='favorite_index'),
     path('shoplist/', views.shop_list_index, name='shop_list_index'),
     path('subscriptions/', views.subscriptions, name='subscriptions'),
-    #path('new/', views.new_recipe, name='new_recipe'),
+    path('recipe_new/', views.new_recipe, name='new_recipe'),
+    path('recipe_edit/<slug:slug>/', views.recipe_edit, name='recipe_edit'),
+    path('ingredients/', views.get_ingredients, name='get_ingredients')
 ]

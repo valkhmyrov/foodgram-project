@@ -38,13 +38,13 @@ class Recipe(models.Model):
         related_name='recipes', 
         help_text='Автор'
     )
-    title = models.CharField('Заголовок', db_index=True, max_length=200, help_text='Название')
-    image = models.ImageField('Изображение', upload_to='foodgram_images/', help_text='Изображение')
-    text = models.TextField('Текст рецепта', help_text='Текст рецепта')
+    title = models.CharField('Название рецепта', db_index=True, max_length=200, help_text='Название')
+    image = models.ImageField('Загрузить фото', upload_to='foodgram_images/', help_text='Изображение')
+    text = models.TextField('Описание', help_text='Текст рецепта')
     ingredients = models.ManyToManyField(Ingredient, through='QuantityOfIngredient')
     tags = models.ManyToManyField(Tag, verbose_name='Тег', related_name='Recipe')
     time = models.IntegerField('Время приготовления', validators=[MaxValueValidator(1440)], help_text='Время приготовления')
-    slug = models.SlugField(unique=True, help_text='Идентификатор рецепта')
+    slug = models.SlugField('Идентификатор рецепта', unique=True, help_text='Идентификатор рецепта')
     pub_date = models.DateTimeField('Время публикации', auto_now_add=True, )
 
     class Meta:

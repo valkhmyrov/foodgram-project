@@ -1,13 +1,14 @@
 from django.shortcuts import redirect, render, get_object_or_404
-from .models import Recipe, Tag, Follow, ShopList
+from .models import Recipe, Tag, Follow, Ingredient, ShopList
 from django.conf import settings
 from django.core.paginator import Paginator
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
+from django.http import JsonResponse
 
 from .forms import RecipeForm
-from .extras import getting_tags, setting_all_tags
+from .extras import getting_tags, setting_all_tags, ingredients_checkup, recipe_save
 
 
 User = get_user_model()
@@ -106,12 +107,11 @@ def shop_list_index(request):
     #            shop_list[ingredient.ingredient] += ingredient.quantity
     #        else:
     #            shop_list[ingredient.ingredient] = ingredient.quantity
-    paginator = Paginator(shop_list, settings.PAGINATOR_ITEMS)
-    page_number = request.GET.get('page')
-    page = paginator.get_page(page_number)
-    context = {'page': page, 'paginator': paginator}
+    #paginator = Paginator(shop_list, settings.PAGINATOR_ITEMS)
+    #page_number = request.GET.get('page')
+    #page = paginator.get_page(page_number)
+    context = {'page': shop_list}
     return render(request, 'foodgram/shop_list.html', context)
-
 
 
 @login_required
@@ -123,6 +123,37 @@ def subscriptions(request):
         subscription.save()
 
 
+@login_required
+def new_recipe(request):
+    form = RecipeForm(request.POST or None, files=request.FILES or None)
+    ingredients_checkup(request, form)
+    if form.is_valid():
+        recipe_save(request, form)
+        return redirect('index')
+    return render(request, 'foodgram/new_recipe.html', {'form': form})
 
 
+@login_required
+def recipe_edit(request, slug):
+    recipe = get_object_or_404(Recipe, slug=slug)
+    if recipe.author != request.user:
+        return redirect('recipe', slug)
+    form = RecipeForm(request.POST or None, files=request.FILES or None, instance=recipe)
+    ingredients_checkup(request, form)
+    if form.is_valid():
+        recipe.ingredients.clear()
+        recipe_save(request, form)
+        return redirect('recipe', slug)
+    context = {'form': form, 'recipe': recipe}
+    return render(request, 'foodgram/new_recipe.html', context)
 
+
+@login_required
+def get_ingredients(request):
+    ingredient_pattern = request.GET.get('query')
+    if ingredient_pattern:
+        ingredients = Ingredient.objects.filter(name__icontains=ingredient_pattern).values('name', 'dimension')
+        if ingredients:
+            data = [{'title': item['name'], 'dimension': item['dimension']} for item in ingredients]
+            return JsonResponse(data, safe=False)    
+    return JsonResponse([{'title': 'Ингредиент не существует', 'dimension': ''}], safe=False)
