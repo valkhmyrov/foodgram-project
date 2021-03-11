@@ -27,6 +27,9 @@ def ingredients_checkup(request, form):
         ingredients = extract_ingredients(request)
         if not ingredients:
             return form.add_error(None, 'Необходимо указать хотя бы один ингредиент для рецепта')
+        uniq_ingredients = list({(v['name'],v['dimension']):v for v in ingredients}.values())
+        if len(uniq_ingredients) != len(ingredients):
+            return form.add_error(None, 'Исключите дублирование ингредиентов')
         for ingredient in ingredients:
             if not Ingredient.objects.filter(name=ingredient['name'], dimension=ingredient['dimension']):
                 return form.add_error(None, 'Ингредиента "' + ingredient['name'] + '" нет.')
@@ -38,7 +41,7 @@ def recipe_save(request, form):
     recipe.save()
     ingredients = extract_ingredients(request)
     for item in ingredients:
-        ingredient = Ingredient.objects.get(name=item['name'], dimension=item['dimension'])
+        ingredient = get_object_or_404(Ingredient, name=item['name'], dimension=item['dimension'])
         data.append(QuantityOfIngredient(ingredient=ingredient, recipe=recipe, quantity=item['quantity']))
     QuantityOfIngredient.objects.bulk_create(data)
     form.save_m2m()
