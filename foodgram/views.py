@@ -151,8 +151,7 @@ def new_recipe(request):
     form = RecipeForm(request.POST or None, files=request.FILES or None)
     ingredients_checkup(request, form)
     if form.is_valid():
-        favorites = Favorite(user=request.user, recipe=recipe)
-        favorites.delete()
+        recipe_save(request, form)
         return redirect('index')
     return render(request, 'foodgram/new_recipe.html', {'form': form})
 
