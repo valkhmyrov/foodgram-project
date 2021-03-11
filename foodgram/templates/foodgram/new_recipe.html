@@ -121,10 +121,7 @@
             <div class="form__footer">
                 {% if request.path == recipe_edit %}
                     <button class="button button_style_blue">Сохранить</button>
-                    {% comment %}
-                    <a style="margin-left: 2.5em" href="{% url 'recipe_delete' slug %}" class="form__ingredient-link">Удалить</a>
-                    {% endcomment %}
-                    <a style="margin-left: 2.5em" href="#" class="form__ingredient-link">Удалить</a>
+                    <a style="margin-left: 2.5em" href="{% url 'recipe_delete' recipe.slug %}" class="form__ingredient-link">Удалить</a>
                 {% else %}
                     <button class="button button_style_blue">Создать рецепт</button>
                 {% endif %}

@@ -87,6 +87,9 @@ class Favorite(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='favorite_user')
 
     class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'recipe'], name='favorite unique'),
+            ]
         verbose_name_plural = 'Список избранного'
 
 

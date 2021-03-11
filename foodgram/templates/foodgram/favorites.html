@@ -1,5 +1,5 @@
 {% extends "helper_templates/base.html" %}
-{% load static thumbnail %}
+{% load static %}
 {% block stylesheet %}
     <link rel="stylesheet" href="{% static './pages/index.css'%}">
 {% endblock %}
@@ -17,10 +17,6 @@
     </div>
     {% include 'foodgram_helpers/paginator.html' %}
 </main>
-{% endblock %}
-
-
-{% comment %}
 <script src="{% static 'js/components/MainCards.js' %}"></script>
 <script src="{% static 'js/components/Purchases.js' %}"></script>
 <script src="{% static 'js/components/Favorites.js' %}"></script>
@@ -30,4 +26,3 @@
 <script src="{% static 'js/api/Api.js' %}"></script>
 <script src="{% static 'favorite.js' %}"></script>
 {% endblock %}
-{% endcomment %}

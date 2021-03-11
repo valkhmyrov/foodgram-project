@@ -9,6 +9,7 @@
     {% block stylesheet %}{% endblock %}
 </head>
 <body class="body" >
+    {% csrf_token %}
     {% include 'helper_templates/nav.html' %}
     {% block content %}{% endblock content %}
     {% include 'helper_templates/footer.html' %}

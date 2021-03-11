@@ -1,5 +1,7 @@
+import json
+
 from django.shortcuts import redirect, render, get_object_or_404
-from .models import Recipe, Tag, Follow, Ingredient, ShopList
+from .models import Recipe, Tag, Follow, Ingredient, ShopList, Favorite
 from django.conf import settings
 from django.core.paginator import Paginator
 from django.urls import reverse
@@ -79,11 +81,11 @@ def follow_index(request):
 
 
 @login_required
-def favorite_index(request):
+def favorites_index(request):
     tags_all = Tag.objects.all()
     tags = getting_tags(request, 'filter')
     if not tags:
-        return redirect(reverse('favorite_index') + setting_all_tags())
+        return redirect(reverse('favorites_index') + setting_all_tags())
     favorites = request.user.favorite_recipe.filter(
         recipe__tags__in=tags
     ).distinct().select_related(
@@ -116,7 +118,7 @@ def shop_list_index(request):
 
 @login_required
 def subscriptions(request):
-    if request.method == "POST":
+    if request.method == 'POST':
         id = request.POST.get('id')
         author = get_object_or_404(User, id=id)
         subscription = Follow(author=author, user=request.user)
@@ -124,11 +126,33 @@ def subscriptions(request):
 
 
 @login_required
+def favorite_add(request):
+    if request.method == 'POST':
+        json_data = json.loads(request.body)
+        recipe = get_object_or_404(Recipe, id=int(json_data['id']))
+        favorite = Favorite(user=request.user, recipe=recipe)
+        favorite.save()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False}) 
+
+
+@login_required
+def favorite_delete(request, id):
+    if request.method == 'DELETE':
+        recipe = get_object_or_404(Recipe, id=id)
+        favorite = get_object_or_404(Favorite, user=request.user, recipe=recipe)
+        favorite.delete()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False}) 
+
+
+@login_required
 def new_recipe(request):
     form = RecipeForm(request.POST or None, files=request.FILES or None)
     ingredients_checkup(request, form)
     if form.is_valid():
-        recipe_save(request, form)
+        favorites = Favorite(user=request.user, recipe=recipe)
+        favorites.delete()
         return redirect('index')
     return render(request, 'foodgram/new_recipe.html', {'form': form})
 
@@ -157,3 +181,14 @@ def get_ingredients(request):
             data = [{'title': item['name'], 'dimension': item['dimension']} for item in ingredients]
             return JsonResponse(data, safe=False)    
     return JsonResponse([{'title': 'Ингредиент не существует', 'dimension': ''}], safe=False)
+
+
+@login_required
+def recipe_delete(request, slug):
+    recipe = get_object_or_404(Recipe, slug=slug)
+    if recipe.author != request.user:
+        return redirect('recipe', slug)
+    recipe.delete()
+    return redirect('profile', request.user)
+
+
