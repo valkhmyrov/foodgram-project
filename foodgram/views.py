@@ -117,6 +117,27 @@ def shop_list_index(request):
 
 
 @login_required
+def purchase_add(request):
+    if request.method == 'POST':
+        json_data = json.loads(request.body)
+        recipe = get_object_or_404(Recipe, id=int(json_data['id']))
+        purchase = ShopList(user=request.user, recipe=recipe)
+        purchase.save()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False}) 
+
+
+@login_required
+def purchase_delete(request, id):
+    if request.method == 'DELETE':
+        recipe = get_object_or_404(Recipe, id=id)
+        purchase = get_object_or_404(ShopList, user=request.user, recipe=recipe)
+        purchase.delete()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False}) 
+
+
+@login_required
 def subscriptions(request):
     if request.method == 'POST':
         id = request.POST.get('id')

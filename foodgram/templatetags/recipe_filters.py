@@ -39,8 +39,15 @@ def recipe_count(author):
 
 
 @register.filter
-def check_user(recipe, user):
+def check_favorite(recipe, user):
     if recipe.favorite_user.filter(user=user):
+        return True
+    return False
+
+
+@register.filter
+def check_shoplist(recipe, user):
+    if recipe.customer.filter(user=user):
         return True
     return False
 
@@ -56,7 +63,15 @@ def tag_id(tag_title):
     id = Tag.objects.filter(title=tag_title).values_list('id', flat=True)[0]
     return id
 
+
 @register.filter()
 def selected_tag(tag_title, recipe):
     if tag_title in recipe.tags.values_list('title', flat=True):
         return True
+
+
+@register.filter
+def check_follower(recipe, user):
+    if user.follower.filter(author=recipe.author):
+        return True
+    return False
