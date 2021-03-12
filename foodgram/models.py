@@ -34,7 +34,7 @@ class Recipe(models.Model):
     author = models.ForeignKey(
         User,
         verbose_name='Автор',
-        on_delete=models.CASCADE, 
+        on_delete=CASCADE, 
         related_name='recipes', 
         help_text='Автор'
     )
@@ -65,8 +65,8 @@ class QuantityOfIngredient(models.Model):
 
 
 class Follow(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='follower', help_text='Подписчик')
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following', help_text='Публицист')
+    user = models.ForeignKey(User, on_delete=CASCADE, related_name='follower', help_text='Подписчик')
+    author = models.ForeignKey(User, on_delete=CASCADE, related_name='following', help_text='Публицист')
 
     class Meta:
         ordering = ['user', 'author']
@@ -83,8 +83,8 @@ class Follow(models.Model):
 
 
 class Favorite(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorite_recipe', help_text='Подписчик')
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='favorite_user')
+    user = models.ForeignKey(User, on_delete=CASCADE, related_name='favorite_recipe', help_text='Подписчик')
+    recipe = models.ForeignKey(Recipe, on_delete=CASCADE, related_name='favorite_user')
 
     class Meta:
         constraints = [
@@ -96,14 +96,14 @@ class Favorite(models.Model):
 class ShopList(models.Model):
     user = models.ForeignKey(
         User, 
-        on_delete=models.CASCADE, 
+        on_delete=CASCADE, 
         related_name='shop_list', 
         verbose_name='Покупатель', 
         help_text='Покупатель'
     )
     recipe = models.ForeignKey(
         Recipe,
-        on_delete=models.CASCADE,
+        on_delete=CASCADE,
         related_name='customer',
         verbose_name='Рецепт',
         help_text='Рецепт'

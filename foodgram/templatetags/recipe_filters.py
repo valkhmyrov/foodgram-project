@@ -71,7 +71,7 @@ def selected_tag(tag_title, recipe):
 
 
 @register.filter
-def check_follower(recipe, user):
-    if user.follower.filter(author=recipe.author):
+def check_follower(author, user):
+    if user.follower.filter(author=author):
         return True
     return False

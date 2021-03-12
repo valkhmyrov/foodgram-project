@@ -4,7 +4,7 @@ from .models import Ingredient, QuantityOfIngredient, Recipe, Tag, Follow, Favor
 
 
 class FoodgramRecipe(admin.ModelAdmin):
-    list_display = ['pk', 'title', 'author', 'text', 'time', 'pub_date', 'get_tags']
+    list_display = ['pk', 'title', 'author_short_name', 'text', 'time', 'pub_date', 'get_tags']
     search_fields = ('title',)
     list_filter = ('author',)
     empty_value_display = '-пусто-'
@@ -12,6 +12,10 @@ class FoodgramRecipe(admin.ModelAdmin):
     def get_tags(self, obj):
         return list(obj.tags.values_list('title', flat=True))
 
+    def author_short_name(self, obj):
+        return (obj.author.get_short_name())
+
+    author_short_name.short_description = 'Автор'
     get_tags.short_description = 'Теги'
 
 
