@@ -138,12 +138,24 @@ def purchase_delete(request, id):
 
 
 @login_required
-def subscriptions(request):
+def subscription_add(request):
     if request.method == 'POST':
-        id = request.POST.get('id')
-        author = get_object_or_404(User, id=id)
+        json_data = json.loads(request.body)
+        author = get_object_or_404(User, id=int(json_data['id']))
         subscription = Follow(author=author, user=request.user)
         subscription.save()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False}) 
+
+
+@login_required
+def subscription_delete(request, id):
+    if request.method == 'DELETE':
+        author = get_object_or_404(User, id=id)
+        subscription = get_object_or_404(Follow, author=author, user=request.user)
+        subscription.delete()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False}) 
 
 
 @login_required
