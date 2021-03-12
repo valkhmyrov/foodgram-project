@@ -95,3 +95,4 @@ EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
 
 PAGINATOR_ITEMS = 6
+PAGINATOR_FOLLOW_ITEMS = 3

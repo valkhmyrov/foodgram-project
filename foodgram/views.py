@@ -73,7 +73,7 @@ def profile(request, username):
 @login_required
 def follow_index(request):
     authors = request.user.follower.all()
-    paginator = Paginator(authors, settings.PAGINATOR_ITEMS)
+    paginator = Paginator(authors, settings.PAGINATOR_FOLLOW_ITEMS)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     context = {'page': page, 'paginator': paginator}

@@ -20,11 +20,11 @@ class Tag(models.Model):
 
 
 class Ingredient(models.Model):
-    name = models.CharField('Ингридиент', db_index=True, max_length=200, help_text='Название ингридиента')
+    name = models.CharField('Ингредиент', db_index=True, max_length=200, help_text='Название ингредиента')
     dimension = models.CharField('Единица измерения', db_index=True, max_length=200, help_text='Единица измерения')
 
     class Meta:
-        verbose_name_plural = 'Ингридиенты'
+        verbose_name_plural = 'Ингредиенты'
 
     def __str__(self):
         return self.name[0:30]
@@ -61,7 +61,7 @@ class QuantityOfIngredient(models.Model):
     quantity = models.IntegerField('Количество', help_text='Количество')
 
     class Meta:
-        verbose_name_plural = 'Количество ингридиентов'
+        verbose_name_plural = 'Количество ингредиентов'
 
 
 class Follow(models.Model):

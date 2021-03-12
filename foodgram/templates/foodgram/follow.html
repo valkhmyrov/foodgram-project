@@ -8,40 +8,21 @@
 <main class="main container">
     <div class="main__header">
         <h1 class="main__title">Мои подписки</h1>
-        {% include "foodgram_helpers/tags.html" %}
     </div>
     <div class="card-list">
         {% for item in page %}
             {% include "foodgram_helpers/author_for_follow.html" with author=item.author %}
         {% empty %}
-            <h3> Подписок нет. </h3>
+            <h3> У вас нет еще ни одной подписки. </h3>
         {% endfor %}
     </div>
     {% include 'foodgram_helpers/paginator.html' %}
 </main>
+<script src="{% static 'js/components/MainCards.js' %}"></script>
+<script src="{% static 'js/components/MyFollow.js' %}"></script>
+<script src="{% static 'js/components/Subscribe.js' %}"></script>
+<script src="{% static 'js/config/config.js' %}"></script>
+<script src="{% static 'js/components/Header.js' %}"></script>
+<script src="{% static 'js/api/Api.js' %}"></script>
+<script src="{% static 'myFollow.js' %}"></script>
 {% endblock %}
-
-{% comment %}
-<!--
-
-    <div class="card-list">
-        {% for follower in all_followings %}
-          {% include 'includes/subscription_item.html' with author=follower.author %}
-        {% empty %}
-          <h2> У Вас еще нет подписок. </h2>
-        {% endfor %}
-        </div>
-        {% if page.has_other_pages %}
-          {% include 'includes/paginator.html' with items=page paginator=paginator %}
-        {% endif %}
-  </main>
-  <script src="{% static 'js/components/MainCards.js' %}"></script>
-  <script src="{% static 'js/components/MyFollow.js' %}"></script>
-  <script src="{% static 'js/components/Subscribe.js' %}"></script>
-  <script src="{% static 'js/config/config.js' %}"></script>
-  <script src="{% static 'js/components/Header.js' %}"></script>
-  <script src="{% static 'js/api/Api.js' %}"></script>
-  <script src="{% static 'myFollow.js' %}"></script>
-{% endblock %}
--->
-{% endcomment %}
