@@ -5,6 +5,7 @@ from ..models import Tag
 
 register = template.Library()
 
+
 @register.filter
 def get_list(request, key):
     tags_list = request.GET.getlist(key)

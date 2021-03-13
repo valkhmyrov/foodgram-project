@@ -34,8 +34,8 @@ class Recipe(models.Model):
     author = models.ForeignKey(
         User,
         verbose_name='Автор',
-        on_delete=CASCADE, 
-        related_name='recipes', 
+        on_delete=CASCADE,
+        related_name='recipes',
         help_text='Автор'
     )
     title = models.CharField('Название рецепта', db_index=True, max_length=200, help_text='Название')
@@ -43,7 +43,11 @@ class Recipe(models.Model):
     text = models.TextField('Описание', help_text='Текст рецепта')
     ingredients = models.ManyToManyField(Ingredient, through='QuantityOfIngredient')
     tags = models.ManyToManyField(Tag, verbose_name='Тег', related_name='Recipe')
-    time = models.IntegerField('Время приготовления', validators=[MaxValueValidator(1440)], help_text='Время приготовления')
+    time = models.IntegerField(
+        'Время приготовления',
+        validators=[MaxValueValidator(1440)],
+        help_text='Время приготовления'
+    )
     slug = models.SlugField('Идентификатор рецепта', unique=True, help_text='Идентификатор рецепта')
     pub_date = models.DateTimeField('Время публикации', auto_now_add=True, )
 
@@ -80,7 +84,7 @@ class Follow(models.Model):
             models.UniqueConstraint(fields=['user', 'author'], name='unique together'),
             ]
         verbose_name_plural = 'Подписка на авторов'
-            
+
     def __str__(self):
         user = self.user.username
         author = self.author.username
@@ -107,10 +111,10 @@ class Favorite(models.Model):
 
 class ShopList(models.Model):
     user = models.ForeignKey(
-        User, 
-        on_delete=CASCADE, 
-        related_name='shop_list', 
-        verbose_name='Покупатель', 
+        User,
+        on_delete=CASCADE,
+        related_name='shop_list',
+        verbose_name='Покупатель',
         help_text='Покупатель'
     )
     recipe = models.ForeignKey(

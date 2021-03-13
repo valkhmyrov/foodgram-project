@@ -1,6 +1,5 @@
 import json
 from django.http.response import HttpResponse
-from django.views.decorators.http import require_http_methods
 from django.shortcuts import redirect, render, get_object_or_404
 from .models import Recipe, Tag, Follow, Ingredient, ShopList, Favorite, QuantityOfIngredient
 from django.conf import settings
@@ -10,7 +9,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from django.db.models import Sum
-from django.views.decorators.cache import cache_page
 
 from .forms import RecipeForm
 from .extras import getting_tags, setting_all_tags, ingredients_checkup, recipe_save
@@ -114,7 +112,7 @@ def shoplist_download(request):
     if not recipes:
         return redirect(reverse('index'))
     shop_list = QuantityOfIngredient.objects.filter(
-        recipe__in = recipes
+        recipe__in=recipes
     ).values(
         'ingredient__name',
         'ingredient__dimension'
@@ -124,8 +122,8 @@ def shoplist_download(request):
     file_data = 'Список ингредиентов\n'
     file_data += '\n'.join(
         [
-            f"{i}. {x['ingredient__name']} ({x['ingredient__dimension']}) - {x['quantity__sum']}" 
-            for i, x 
+            f"{i}. {x['ingredient__name']} ({x['ingredient__dimension']}) - {x['quantity__sum']}"
+            for i, x
             in enumerate(shop_list, start=1)
         ]
     )
@@ -142,7 +140,7 @@ def purchase_add(request):
         purchase = ShopList(user=request.user, recipe=recipe)
         purchase.save()
         return JsonResponse({'success': True})
-    return JsonResponse({'success': False}) 
+    return JsonResponse({'success': False})
 
 
 # Происходит отправка удаления сразу двумя способами (GET и DELETE) со странички shoplist,
@@ -169,7 +167,7 @@ def subscription_add(request):
         subscription = Follow(author=author, user=request.user)
         subscription.save()
         return JsonResponse({'success': True})
-    return JsonResponse({'success': False}) 
+    return JsonResponse({'success': False})
 
 
 @login_required
@@ -179,7 +177,7 @@ def subscription_delete(request, id):
         subscription = get_object_or_404(Follow, author=author, user=request.user)
         subscription.delete()
         return JsonResponse({'success': True})
-    return JsonResponse({'success': False}) 
+    return JsonResponse({'success': False})
 
 
 @login_required
@@ -190,7 +188,7 @@ def favorite_add(request):
         favorite = Favorite(user=request.user, recipe=recipe)
         favorite.save()
         return JsonResponse({'success': True})
-    return JsonResponse({'success': False}) 
+    return JsonResponse({'success': False})
 
 
 @login_required
@@ -200,7 +198,7 @@ def favorite_delete(request, id):
         favorite = get_object_or_404(Favorite, user=request.user, recipe=recipe)
         favorite.delete()
         return JsonResponse({'success': True})
-    return JsonResponse({'success': False}) 
+    return JsonResponse({'success': False})
 
 
 @login_required
@@ -235,7 +233,7 @@ def get_ingredients(request):
         ingredients = Ingredient.objects.filter(name__icontains=ingredient_pattern).values('name', 'dimension')
         if ingredients:
             data = [{'title': item['name'], 'dimension': item['dimension']} for item in ingredients]
-            return JsonResponse(data, safe=False)    
+            return JsonResponse(data, safe=False)
     return JsonResponse([{'title': 'Ингредиент не существует', 'dimension': ''}], safe=False)
 
 

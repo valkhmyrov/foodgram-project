@@ -7,32 +7,36 @@ def getting_tags(request, tag_name):
     tags = Tag.objects.filter(title__in=request.GET.getlist(tag_name))
     return tags
 
+
 def setting_all_tags():
     get_parameters = '?filter=' + '&filter='.join(Tag.objects.values_list('title', flat=True))
     return get_parameters
+
 
 def extract_ingredients(request):
     output = []
     numbers = [key.replace('nameIngredient_', '') for key, val in request.POST.items() if 'nameIngredient' in key]
     for number in numbers:
         output.append({
-            'name': request.POST['nameIngredient_' + str(number)], 
+            'name': request.POST['nameIngredient_' + str(number)],
             'quantity': int(request.POST['valueIngredient_' + str(number)]),
             'dimension': request.POST['unitsIngredient_' + str(number)]
         })
     return output
+
 
 def ingredients_checkup(request, form):
     if request.method == 'POST':
         ingredients = extract_ingredients(request)
         if not ingredients:
             return form.add_error(None, 'Необходимо указать хотя бы один ингредиент для рецепта')
-        uniq_ingredients = list({(v['name'],v['dimension']):v for v in ingredients}.values())
+        uniq_ingredients = list({(v['name'], v['dimension']): v for v in ingredients}.values())
         if len(uniq_ingredients) != len(ingredients):
             return form.add_error(None, 'Исключите дублирование ингредиентов')
         for ingredient in ingredients:
             if not Ingredient.objects.filter(name=ingredient['name'], dimension=ingredient['dimension']):
                 return form.add_error(None, 'Ингредиента "' + ingredient['name'] + '" нет.')
+
 
 def recipe_save(request, form):
     data = []

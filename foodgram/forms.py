@@ -9,4 +9,3 @@ class RecipeForm(forms.ModelForm):
         model = Recipe
         exclude = ('author', 'ingredients', 'pub_date')
         widgets = {'tags': forms.CheckboxSelectMultiple(), 'text': forms.Textarea(attrs={'rows': 8})}
-
