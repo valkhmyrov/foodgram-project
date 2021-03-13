@@ -19,7 +19,6 @@ from .extras import getting_tags, setting_all_tags, ingredients_checkup, recipe_
 User = get_user_model()
 
 
-@cache_page(30)
 def index(request):
     tags_all = Tag.objects.all()
     tags = getting_tags(request, 'filter')
@@ -43,14 +42,12 @@ def index(request):
     return render(request, 'foodgram/index.html', context)
 
 
-@cache_page(60)
 def recipe_view(request, slug):
     recipe = get_object_or_404(Recipe.objects.prefetch_related('tags'), slug=slug)
     context = {'recipe': recipe}
     return render(request, 'foodgram/recipe.html', context)
 
 
-@cache_page(60)
 def profile(request, username):
     author = get_object_or_404(User, username=username)
     tags_all = Tag.objects.all()
@@ -251,3 +248,10 @@ def recipe_delete(request, slug):
     return redirect('profile', request.user)
 
 
+def page_not_found(request, exception):
+    context = {'path': request.path}
+    return render(request, 'misc/404.html', context, status=404)
+
+
+def server_error(request):
+    return render(request, 'misc/500.html', status=500)

@@ -1,0 +1,16 @@
+{% extends "helper_templates/base.html" %}
+{% load static %}
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static './pages/index.css'%}">
+{% endblock %}
+{% block title %}Not Found{% endblock %}
+{% block content %}
+<main class="main container">
+    <div class="main__header">
+        <h1 class="main__title">Not Found</h1>
+    </div>
+    <div class="card-list">
+      <h2>Запрошенный урл <code>{{ path }}</code>не найден<br><br><a href="{% url 'index' %}">Вернуться на главную</a></h2>
+    </div>
+</main>
+{% endblock %}
