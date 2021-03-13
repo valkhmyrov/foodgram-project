@@ -79,7 +79,7 @@ jobs:
 
           if [ -f .new_server ]; then
             echo "--- Creation of file with secrets. Start docker-compose ---"
-            echo -e "SECRET_KEY = ${{ secrets.SECRET_KEY }}\nPOSTGRES_DB = ${{ secrets.POSTGRES_DB }}\nPOSTGRES_USER = ${{ secrets.POSTGRES_USER }}\nPOSTGRES_PASSWORD = ${{ secrets.PASSPHRASE }}\nDB_HOST = db\nDB_PORT = 5432" > .env
+            echo -e "SECRET_KEY = ${{ secrets.SECRET_KEY }}\nDB_ENGINE = 'django.db.backends.postgresql'\nPOSTGRES_DB = ${{ secrets.POSTGRES_DB }}\nPOSTGRES_USER = ${{ secrets.POSTGRES_USER }}\nPOSTGRES_PASSWORD = ${{ secrets.PASSPHRASE }}\nDB_HOST = db\nDB_PORT = 5432" > .env
             sudo docker-compose up -d
           else
             echo "--- Updating images and starting docker-compose ---"
