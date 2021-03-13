@@ -63,6 +63,11 @@ class QuantityOfIngredient(models.Model):
     class Meta:
         verbose_name_plural = 'Количество ингредиентов'
 
+    def __str__(self):
+        ingredient = self.ingredient.name
+        output = f'ingredient: {ingredient}, quantity: {quantity}'
+        return output[0:30]
+
 
 class Follow(models.Model):
     user = models.ForeignKey(User, on_delete=CASCADE, related_name='follower', help_text='Подписчик')
@@ -79,7 +84,7 @@ class Follow(models.Model):
         user = self.user.username
         author = self.author.username
         output = f'user: {user}, author: {author}'
-        return output
+        return output[0:30]
 
 
 class Favorite(models.Model):
@@ -91,6 +96,12 @@ class Favorite(models.Model):
             models.UniqueConstraint(fields=['user', 'recipe'], name='favorite unique'),
             ]
         verbose_name_plural = 'Список избранного'
+
+    def __str__(self):
+        user = self.user.username
+        recipe = self.recipe.title
+        output = f'user: {user}, recipe: {recipe}'
+        return output[0:30]
 
 
 class ShopList(models.Model):
@@ -111,3 +122,9 @@ class ShopList(models.Model):
 
     class Meta:
         verbose_name_plural = 'Список покупок'
+
+    def __str__(self):
+        user = self.user.username
+        recipe = self.recipe.title
+        output = f'user: {user}, recipe: {recipe}'
+        return output[0:30]

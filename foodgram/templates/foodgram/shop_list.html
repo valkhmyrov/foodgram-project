@@ -18,22 +18,20 @@
                     <h3 class="recipe__title">{{ item.recipe.title }}</h3>
                     <p class="recipe__text"><span class="icon-time"></span> {{ item.recipe.time }} мин.</p>
                 </div>
-                <a href="#" class="shopping-list__button link">Удалить</a>
+                <a href="{% url 'purchases_delete' item.recipe.id %}" class="shopping-list__button link">Удалить</a>
             </li>
             {% empty %}
                 <h3>Список покупок пуст.</h3>
             {% endfor %}
         </ul>
-        <a href="#"><button class="button button_style_blue">Скачать список</button></a>
+        <a href="{% url 'shoplist_download' %}"><button class="button button_style_blue">Скачать список</button></a>
     </div>
 </main>
-{% endblock %}
-
-
+<script src="{% static 'js/config/config.js' %}"></script>
+<script src="{% static 'js/components/Header.js' %}"></script>
 {% comment %}
-    <script src="{% static 'js/config/config.js' %}"></script>
-    <script src="{% static 'js/components/Header.js' %}"></script>
-    <script src="{% static 'js/components/ShopList.js' %}"></script>
-    <script src="{% static 'js/api/Api.js' %}"></script>
-    <script src="{% static 'shopList.js' %}"></script>
+<script src="{% static 'js/components/ShopList.js' %}"></script>
 {% endcomment %}
+<script src="{% static 'js/api/Api.js' %}"></script>
+<script src="{% static 'shopList.js' %}"></script>
+{% endblock %}

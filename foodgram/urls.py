@@ -11,6 +11,7 @@ urlpatterns = [
     path('favorites/', views.favorite_add, name='favorite_add'),
     path('favorites/<int:id>', views.favorite_delete, name='favorite_delete'),
     path('shoplist/', views.shop_list_index, name='shop_list_index'),
+    path('shoplist_download/', views.shoplist_download, name='shoplist_download'),
     path('purchases/', views.purchase_add, name='purchase_add'),
     path('purchases/<int:id>', views.purchase_delete, name='purchases_delete'),
     path('subscriptions/', views.subscription_add, name='subscription_add'),

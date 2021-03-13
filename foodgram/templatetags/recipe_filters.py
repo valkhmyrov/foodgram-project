@@ -20,6 +20,7 @@ def filter_manager(request, tag):
         new_request.setlist('filter', filters)
     else:
         new_request.appendlist('filter', tag.title)
+    new_request.pop('page', None)
     return new_request.urlencode()
 
 
