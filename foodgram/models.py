@@ -65,6 +65,7 @@ class QuantityOfIngredient(models.Model):
 
     def __str__(self):
         ingredient = self.ingredient.name
+        quantity = self.quantity
         output = f'ingredient: {ingredient}, quantity: {quantity}'
         return output[0:30]
 
