@@ -2,7 +2,6 @@ from django import template
 
 from ..models import Tag
 
-
 register = template.Library()
 
 

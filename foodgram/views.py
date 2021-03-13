@@ -1,18 +1,18 @@
 import json
-from django.http.response import HttpResponse
-from django.shortcuts import redirect, render, get_object_or_404
-from .models import Recipe, Tag, Follow, Ingredient, ShopList, Favorite, QuantityOfIngredient
+
 from django.conf import settings
-from django.core.paginator import Paginator
-from django.urls import reverse
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
-from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.db.models import Sum
+from django.http import JsonResponse
+from django.http.response import HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 
+from .extras import getting_tags, ingredients_checkup, recipe_save, setting_all_tags
 from .forms import RecipeForm
-from .extras import getting_tags, setting_all_tags, ingredients_checkup, recipe_save
-
+from .models import Favorite, Follow, Ingredient, QuantityOfIngredient, Recipe, ShopList, Tag
 
 User = get_user_model()
 

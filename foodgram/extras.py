@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 
-from .models import Tag, QuantityOfIngredient, Ingredient
+from .models import Ingredient, QuantityOfIngredient, Tag
 
 
 def getting_tags(request, tag_name):

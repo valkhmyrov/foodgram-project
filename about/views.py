@@ -1,5 +1,5 @@
-from django.views.generic.base import TemplateView
 from django.urls import reverse
+from django.views.generic.base import TemplateView
 
 
 class AboutSomethingView(TemplateView):
