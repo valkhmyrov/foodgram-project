@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from django.db.models import Sum
+from django.views.decorators.cache import cache_page
 
 from .forms import RecipeForm
 from .extras import getting_tags, setting_all_tags, ingredients_checkup, recipe_save
@@ -18,6 +19,7 @@ from .extras import getting_tags, setting_all_tags, ingredients_checkup, recipe_
 User = get_user_model()
 
 
+@cache_page(30)
 def index(request):
     tags_all = Tag.objects.all()
     tags = getting_tags(request, 'filter')
@@ -41,12 +43,14 @@ def index(request):
     return render(request, 'foodgram/index.html', context)
 
 
+@cache_page(60)
 def recipe_view(request, slug):
     recipe = get_object_or_404(Recipe.objects.prefetch_related('tags'), slug=slug)
     context = {'recipe': recipe}
     return render(request, 'foodgram/recipe.html', context)
 
 
+@cache_page(60)
 def profile(request, username):
     author = get_object_or_404(User, username=username)
     tags_all = Tag.objects.all()

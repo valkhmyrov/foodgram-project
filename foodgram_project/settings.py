@@ -96,3 +96,9 @@ EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
 
 PAGINATOR_ITEMS = 6
 PAGINATOR_FOLLOW_ITEMS = 3
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    }
+}
