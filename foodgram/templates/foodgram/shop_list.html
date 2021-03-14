@@ -15,7 +15,7 @@
             <li class="shopping-list__item" data-id="{{ item.recipe.id }}">
                 <div class="recipe recipe_reverse">
                     <img src="{{ item.recipe.image.url }}" alt="какой-то текст" class="recipe__image recipe__image_big">
-                    <h3 class="recipe__title">{{ item.recipe.title }}</h3>
+                    <a class="recipe__title" href="{% url 'recipe' item.recipe.slug %}" target="_self">{{ item.recipe.title }}</a>
                     <p class="recipe__text"><span class="icon-time"></span> {{ item.recipe.time }} мин.</p>
                 </div>
                 <a href="{% url 'purchases_delete' item.recipe.id %}" class="shopping-list__button link">Удалить</a>
@@ -24,7 +24,9 @@
                 <h3>Список покупок пуст.</h3>
             {% endfor %}
         </ul>
-        <a href="{% url 'shoplist_download' %}"><button class="button button_style_blue">Скачать список</button></a>
+        {% if page %}
+            <a href="{% url 'shoplist_download' %}"><button class="button button_style_blue">Скачать список</button></a>
+        {% endif %}
     </div>
 </main>
 <script src="{% static 'js/config/config.js' %}"></script>

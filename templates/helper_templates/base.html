@@ -8,6 +8,7 @@
     <title>{% block title %}Foodgram title, dont forget to set!{% endblock %}</title>
     {% block stylesheet %}{% endblock %}
 </head>
+<style> a { text-decoration: none;} </style>
 <body class="body" >
     {% csrf_token %}
     {% include 'helper_templates/nav.html' %}

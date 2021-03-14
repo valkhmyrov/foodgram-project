@@ -1,9 +1,4 @@
 {% load static recipe_filters %}
-<style>
-    a { 
-     text-decoration: none;
-    } 
-</style>
 <div class="card" data-id="{{ recipe.id }}">
     <a href="{% url 'recipe' recipe.slug %}" class="link" target="_self"><img src="{{ recipe.image.url }}" alt="Какой-то текст" class="card__image"></a>
     <div class="card__body">
