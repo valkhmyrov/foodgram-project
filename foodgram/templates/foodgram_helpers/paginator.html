@@ -5,7 +5,7 @@
         {% if page.has_previous %}
             <li class="pagination__item"><a class="pagination__link link" href="?{{request|paginator_manager:page.previous_page_number}}"><span class="icon-left"></span></a></li>
         {% else %}
-           <li class="pagination__item"><a class="pagination__link link" href="#"><span class="icon-left"></span></a></li>
+           <li class="pagination__item"><a class="pagination__link link"><span class="icon-left"></span></a></li>
         {% endif %}
         {% for i in paginator.page_range %}
             {% if page.number == i %}
@@ -17,7 +17,7 @@
         {% if page.has_next %}
             <li class="pagination__item"><a class="pagination__link link" href="?{{request|paginator_manager:page.next_page_number}}"><span class="icon-right"></span></a></li>
         {% else %}
-            <li class="pagination__item"><a class="pagination__link link" href="#"><span class="icon-right"></span></a></li>
+            <li class="pagination__item"><a class="pagination__link link"><span class="icon-right"></span></a></li>
         {% endif %}
     </ul>
 </nav>
