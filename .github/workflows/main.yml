@@ -94,7 +94,7 @@ jobs:
             echo "--- Making collectstatic ---"
             sudo docker-compose exec -T web sh -c "python manage.py collectstatic --noinput"
             echo "--- Adding superuser ---"
-            sudo docker-compose exec -T web sh -c "echo 'from users.models import User; User.objects.create_superuser(\"${{ secrets.DJANGO_ADMIN }}\", \"${{ secrets.DJANGO_EMAIL }}\", \"${{ secrets.DJANGO_PASS }}\")' | python manage.py shell"
+            sudo docker-compose exec -T web sh -c "echo 'from foodgram.models import User; User.objects.create_superuser(\"${{ secrets.DJANGO_ADMIN }}\", \"${{ secrets.DJANGO_EMAIL }}\", \"${{ secrets.DJANGO_PASS }}\")' | python manage.py shell"
             rm -f .new_server
           fi
   
