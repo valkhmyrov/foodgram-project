@@ -20,8 +20,6 @@ services:
       - ./static:/code/static
     env_file:
       - ./.env
-    ports:
-      - "8000:8000"
   nginx:
     image: nginx:1.19.6-alpine
     ports:
