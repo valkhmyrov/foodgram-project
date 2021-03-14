@@ -1,5 +1,5 @@
 # Foodgram project
-This is my cource work ar Yandex Praktikum/
+This is my cource work ar Yandex Praktikum. Example at [valkhmyrov.cf](http://valkhmyrov.cf)
 
 ![example workflow name](https://github.com/valkhmyrov/foodgram-project/workflows/foodgram-project/badge.svg)
 
