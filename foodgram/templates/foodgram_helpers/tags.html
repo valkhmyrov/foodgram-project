@@ -4,7 +4,13 @@
     {% for tag in tags %}
         <li class="tags__item">
             <a id="{{ tag.id }}" class="tags__checkbox tags__checkbox_style_{{ tag.checkbox_style }}
-            {% if tag.title in filter_tag %} tags__checkbox_active {% endif %}" href="?{{request|filter_manager:tag}}"></a>
+            {% if tag.title in filter_tag %} tags__checkbox_active {% endif %}" 
+                {% if filter_tag|length_is:"1" and tag.title in filter_tag %}
+                    href="#">
+                {% else %}
+                    href="?{{request|filter_manager:tag}}">
+                {% endif %}
+            </a>
             <span class="tags__label">{{ tag.title }}</span>
         </li>
     {% endfor %}
