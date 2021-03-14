@@ -1,8 +1,8 @@
 {% load static recipe_filters %}
 <div class="card" data-id="{{ recipe.id }}">
-    <a href="{% url 'recipe' recipe.slug %}" class="link" target="_blank"><img src="{{ recipe.image.url }}" alt="Какой-то текст" class="card__image"></a>
+    <a href="{% url 'recipe' recipe.slug %}" class="link" target="_self"><img src="{{ recipe.image.url }}" alt="Какой-то текст" class="card__image"></a>
     <div class="card__body">
-        <a class="card__title link" href="{% url 'recipe' recipe.slug %}" target="_blank">{{ recipe.title }}</a>
+        <a class="card__title link" href="{% url 'recipe' recipe.slug %}" target="_self">{{ recipe.title }}</a>
         <ul class="card__items">
             {% for tag in recipe.tags.all %}
                 <li class="card__item"><span class="badge badge_style_{{ tag.checkbox_style }}">{{ tag.title }}</span></li>
