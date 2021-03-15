@@ -22,11 +22,11 @@ sudo docker-compose up
 ```
 sudo docker-compose exec -T web sh -c "python manage.py migrate"
 ```
-6. Collect static.
+5. Collect static.
 ```
 sudo docker-compose exec -T web sh -c "python manage.py collectstatic --noinput"
 ```
-5. Create superuser. Execute command in web container, then exit.
+6. Create superuser. Execute command in web container, then exit.
 ```
 python manage.py createsuperuser
 ```
