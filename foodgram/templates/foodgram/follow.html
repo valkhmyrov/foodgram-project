@@ -13,7 +13,9 @@
         {% for item in page %}
             {% include "foodgram_helpers/author_for_follow.html" with author=item.author %}
         {% empty %}
-            <h3> У вас нет еще ни одной подписки. </h3>
+            <div class="custom-center-block">
+                <p class="custom-text-block">У вас нет еще ни одной подписки.</p>
+            </div>
         {% endfor %}
     </div>
     {% include 'foodgram_helpers/paginator.html' %}

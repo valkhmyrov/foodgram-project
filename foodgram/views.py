@@ -92,7 +92,7 @@ def favorites_index(request):
     ).distinct().select_related(
         'recipe'
     )
-    paginator = Paginator(favorites, settings.PAGINATOR_FOLLOW_ITEMS)
+    paginator = Paginator(favorites, settings.PAGINATOR_ITEMS)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     context = {'page': page, 'paginator': paginator, 'tags': tags_all}
