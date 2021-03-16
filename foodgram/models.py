@@ -47,7 +47,7 @@ class Recipe(models.Model):
         validators=[MaxValueValidator(1440)],
         help_text='Время приготовления'
     )
-    slug = models.SlugField('Идентификатор рецепта', unique=True, help_text='Идентификатор рецепта')
+    slug = models.SlugField('Идентификатор рецепта', unique=True, help_text='Идентификатор рецепта', allow_unicode=True)
     pub_date = models.DateTimeField('Время публикации', auto_now_add=True, )
 
     class Meta:

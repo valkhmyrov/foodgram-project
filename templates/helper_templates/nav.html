@@ -1,4 +1,4 @@
-{% url 'signup' as signup %}
+{% load recipe_filters %}
 {% url 'login' as login %}
 {% url 'password_change' as password_change %}
 {% url 'index' as index %}
@@ -12,27 +12,27 @@
         <nav class="nav">
             <div class="nav__container container">
                 <ul class="nav__items list">
-                    <li class="nav__item {% if request.path == index or request.path == recipe or request.path == profile %} nav__item_active {% endif %}">
+                    <li class="nav__item {% if request.path|decode_path == index or request.path|decode_path == recipe or request.path|decode_path == profile %} nav__item_active {% endif %}">
                         <a href="{% url 'index' %}" class="nav__link link">Рецепты</a></li>
                     {% if request.user.is_authenticated %}
-                        <li class="nav__item {% if request.path == follow_index %} nav__item_active {% endif %}">
+                        <li class="nav__item {% if request.path|decode_path == follow_index %} nav__item_active {% endif %}">
                             <a href="{% url 'follow_index' %}" class="nav__link link">Мои подписки</a></li>
-                        <li class="nav__item {% if request.path == new_recipe %} nav__item_active {% endif %}">
+                        <li class="nav__item {% if request.path|decode_path == new_recipe %} nav__item_active {% endif %}">
                             <a href="{% url 'new_recipe' %}" class="nav__link link">Создать рецепт</a></li>
-                        <li class="nav__item {% if request.path == favorites_index %} nav__item_active {% endif %}">
+                        <li class="nav__item {% if request.path|decode_path == favorites_index %} nav__item_active {% endif %}">
                             <a href="{% url 'favorites_index' %}" class="nav__link link">Избранное</a></li>
-                        <li class="nav__item {% if request.path == shop_list_index %} nav__item_active {% endif %}">
+                        <li class="nav__item {% if request.path|decode_path == shop_list_index %} nav__item_active {% endif %}">
                             <a href="{% url 'shop_list_index' %}" class="nav__link link">Список покупок</a>
                             <span class="badge badge_style_blue nav__badge" id="counter">{% if request.user.shop_list.count %}{{ request.user.shop_list.count }}{% endif %}</span></li>
                     {% endif %}
                 </ul>
                 <ul class="nav__items list">
                     {% if request.user.is_authenticated %}
-                        <li class="nav__item {% if request.path == password_change %} nav__item_active {% endif %}">
+                        <li class="nav__item {% if request.path|decode_path == password_change %} nav__item_active {% endif %}">
                             <a href="{% url 'password_change' %}" class="nav__link link">Изменить пароль</a></li>
                         <li class="nav__item"><a href="{% url 'logout' %}" class="nav__link link">Выход</a></li>
                     {% else %}
-                        <li class="nav__item {% if request.path == login %} nav__item_active {% endif %}">
+                        <li class="nav__item {% if request.path|decode_path == login %} nav__item_active {% endif %}">
                             <a href="{% url 'login' %}" class="nav__link link">Войти</a></li>
                         <li class="nav__item"><a href="{% url 'signup' %}"><button class="button button_style_blue">Создать аккаунт</button></a></li>
                     {% endif %}

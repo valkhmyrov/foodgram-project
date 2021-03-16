@@ -6,7 +6,7 @@
 
 {% block title %}
     {% url 'recipe_edit' recipe.slug as recipe_edit %}
-    {% if request.path == recipe_edit %}
+    {% if request.path|decode_path == recipe_edit %}
         Редактирование рецепта
     {% else %}
         Создание рецепта {{recipe_edit}}
@@ -17,7 +17,7 @@
 {% url 'recipe_edit' recipe.slug as recipe_edit %}
 <main class="main container">
     <div class="main__header">
-        {% if request.path == recipe_edit %}
+        {% if request.path|decode_path == recipe_edit %}
             <h1 class="main__title">Редактирование рецепта</h1>
         {% else %}
             <h1 class="main__title">Создание рецепта</h1>
@@ -119,7 +119,7 @@
                 </div>
             </div>  
             <div class="form__footer">
-                {% if request.path == recipe_edit %}
+                {% if request.path|decode_path == recipe_edit %}
                     <button class="button button_style_blue">Сохранить</button>
                     <a style="margin-left: 2.5em" href="{% url 'recipe_delete' recipe.slug %}" class="form__ingredient-link">Удалить</a>
                 {% else %}

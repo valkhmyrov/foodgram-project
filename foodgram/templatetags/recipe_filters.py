@@ -1,5 +1,5 @@
 from django import template
-
+from django.utils.encoding import iri_to_uri
 from ..models import Tag
 
 register = template.Library()
@@ -66,9 +66,8 @@ def tag_id(tag_title):
 
 
 @register.filter()
-def selected_tag(tag_title, recipe):
-    if tag_title in recipe.tags.values_list('title', flat=True):
-        return True
+def decode_path(path):
+    return iri_to_uri(path)
 
 
 @register.filter
