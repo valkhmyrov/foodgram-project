@@ -1,6 +1,8 @@
 from django.shortcuts import get_object_or_404
+from django.utils.text import slugify
 
-from .models import Ingredient, QuantityOfIngredient, Tag
+from foodgram_project.settings import SLUG_MAX_LENGTH, SLUG_MAX_TEXT_LENGTH
+from .models import Ingredient, QuantityOfIngredient, Tag, Recipe
 
 
 def getting_tags(request, tag_name):
@@ -42,6 +44,15 @@ def recipe_save(request, form):
     data = []
     recipe = form.save(commit=False)
     recipe.author = request.user
+    slug_candidate = slug_original = slugify(recipe.title, allow_unicode=True)[:SLUG_MAX_TEXT_LENGTH]
+    index = 0
+    while Recipe.objects.filter(slug=slug_candidate):
+        index += 1
+        slug_candidate = f'{slug_original}-{index}'
+    if index > int((SLUG_MAX_LENGTH - SLUG_MAX_TEXT_LENGTH) * '9'):
+        form.add_error('title', 'С таким заголовком уже много рецептов!')
+        return False
+    recipe.slug = slug_candidate
     recipe.save()
     ingredients = extract_ingredients(request)
     for item in ingredients:
@@ -49,3 +60,4 @@ def recipe_save(request, form):
         data.append(QuantityOfIngredient(ingredient=ingredient, recipe=recipe, quantity=item['quantity']))
     QuantityOfIngredient.objects.bulk_create(data)
     form.save_m2m()
+    return True

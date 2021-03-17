@@ -222,8 +222,8 @@ def new_recipe(request):
     form = RecipeForm(request.POST or None, files=request.FILES or None)
     ingredients_checkup(request, form)
     if form.is_valid():
-        recipe_save(request, form)
-        return redirect('index')
+        if recipe_save(request, form):
+            return redirect('index')
     return render(request, 'foodgram/new_recipe.html', {'form': form})
 
 
@@ -231,13 +231,13 @@ def new_recipe(request):
 def recipe_edit(request, slug):
     recipe = get_object_or_404(Recipe, slug=slug)
     if recipe.author != request.user:
-        return redirect('recipe', slug)
+        return redirect('recipe', recipe.slug)
     form = RecipeForm(request.POST or None, files=request.FILES or None, instance=recipe)
     ingredients_checkup(request, form)
     if form.is_valid():
         recipe.ingredients.clear()
         recipe_save(request, form)
-        return redirect('recipe', slug)
+        return redirect('recipe', recipe.slug)
     context = {'form': form, 'recipe': recipe}
     return render(request, 'foodgram/new_recipe.html', context)
 
