@@ -2,6 +2,9 @@ from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator
 from django.db import models
 from django.db.models.deletion import CASCADE
+from django.utils.text import slugify
+
+from foodgram_project.settings import SLUG_MAX_LENGTH
 
 User = get_user_model()
 
@@ -47,7 +50,12 @@ class Recipe(models.Model):
         validators=[MaxValueValidator(1440)],
         help_text='Время приготовления'
     )
-    slug = models.SlugField('Идентификатор рецепта', unique=True, help_text='Идентификатор рецепта', allow_unicode=True)
+    slug = models.SlugField(
+        'Идентификатор рецепта',
+        unique=True,
+        help_text='Идентификатор рецепта',
+        allow_unicode=True,
+    )
     pub_date = models.DateTimeField('Время публикации', auto_now_add=True, )
 
     class Meta:
@@ -56,6 +64,11 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.title[0:30]
+
+    def save(self, *args, **kwargs):
+        slug = str(self.pk) + '-' + self.title
+        self.slug = slugify(slug, allow_unicode=True)[:SLUG_MAX_LENGTH]
+        super().save(*args, **kwargs)
 
 
 class QuantityOfIngredient(models.Model):
