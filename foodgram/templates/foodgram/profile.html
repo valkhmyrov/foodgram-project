@@ -3,7 +3,7 @@
 {% block stylesheet %}
     <link rel="stylesheet" href="{% static './pages/index.css'%}">
 {% endblock %}
-{% block title %}Рецепты{% endblock %}
+{% block title %}{{ author.first_name }}{% endblock %}
 {% block content %}
 <main class="main container">
     <div class="main__header">
