@@ -10,7 +10,7 @@ from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
-from .extras import getting_tags, ingredients_checkup, recipe_save, setting_all_tags
+from .extras import getting_tags, recipe_save, setting_all_tags
 from .forms import RecipeForm
 from .models import Favorite, Follow, Ingredient, QuantityOfIngredient, Recipe, ShopList, Tag
 
@@ -220,7 +220,6 @@ def favorite_delete(request, id):
 @login_required
 def new_recipe(request):
     form = RecipeForm(request.POST or None, files=request.FILES or None)
-    ingredients_checkup(request, form)
     if form.is_valid():
         if recipe_save(request, form):
             return redirect('index')
@@ -232,8 +231,18 @@ def recipe_edit(request, slug):
     recipe = get_object_or_404(Recipe, slug=slug)
     if recipe.author != request.user:
         return redirect('recipe', recipe.slug)
+
     form = RecipeForm(request.POST or None, files=request.FILES or None, instance=recipe)
-    ingredients_checkup(request, form)
+    if not form.ingredients:
+        for ingr in recipe.ingredients.all():
+            form.ingredients.append(
+                {
+                    'name': ingr.name,
+                    'quantity': recipe.quantityofingredient_set.filter(ingredient=ingr)[0].quantity,
+                    'dimension': ingr.dimension
+                }
+            )
+
     if form.is_valid():
         recipe.ingredients.clear()
         recipe_save(request, form)

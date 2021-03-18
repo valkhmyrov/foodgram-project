@@ -66,14 +66,14 @@
                     </div>
                     <span class="form__ingredient-link" id="addIng">Добавить ингредиент</span>
                     <div class="form__field-group-ingredientes-container">
-                        {% for ingr in recipe.ingredients.all %}
-                            <div class="form__field-item-ingredient" id="{{ forloop.counter|add:100 }}">
-                                <span> {{ ingr.name }} {{ ingr.quantityofingredient_set.all.0.quantity }}{{ ingr.dimension }}.</span>
-                                <span class="form__field-item-delete"></span>
-                                <input id="nameIngredient_{{ forloop.counter|add:100 }}" name="nameIngredient_{{ forloop.counter|add:100 }}" type="hidden" value="{{ ingr.name }}">
-                                <input id="valueIngredient_{{ forloop.counter|add:100 }}" name="valueIngredient_{{ forloop.counter|add:100 }}" type="hidden" value="{{ ingr.quantityofingredient_set.all.0.quantity }}">
-                                <input id="unitsIngredient_{{ forloop.counter|add:100 }}" name="unitsIngredient_{{ forloop.counter|add:100 }}" type="hidden" value="{{ ingr.dimension }}">
-                            </div>
+                        {% for ingr in form.ingredients %}
+                        <div class="form__field-item-ingredient" id="{{ forloop.counter|add:100 }}">
+                            <span> {{ ingr.name }} {{ ingr.quantity }}{{ ingr.dimension }}.</span>
+                            <span class="form__field-item-delete"></span>
+                            <input id="nameIngredient_{{ forloop.counter|add:100 }}" name="nameIngredient_{{ forloop.counter|add:100 }}" type="hidden" value="{{ ingr.name }}">
+                            <input id="valueIngredient_{{ forloop.counter|add:100 }}" name="valueIngredient_{{ forloop.counter|add:100 }}" type="hidden" value="{{ ingr.quantity }}">
+                            <input id="unitsIngredient_{{ forloop.counter|add:100 }}" name="unitsIngredient_{{ forloop.counter|add:100 }}" type="hidden" value="{{ ingr.dimension }}">
+                        </div>
                         {% endfor %}
                     </div>
                     {% if form.non_field_errors %}
@@ -81,7 +81,6 @@
                     {% endif %}
                 </div>
             </div>
-
             <div class="form__group">
                 <label for="{{ form.time.id_for_label }}" class="form__label">{{ form.time.label }}</label>
                 <div class="form__field-group form__field-group_time">
