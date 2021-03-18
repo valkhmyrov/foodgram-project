@@ -53,6 +53,7 @@
                     {% endif %}
                 </div>
             </div>
+            {{ form.ingr }}
             <div class="form__group">
                 <label for="nameIngredient" class="form__label">Ингредиенты</label>
                 <div class="form__field-group">
@@ -62,7 +63,7 @@
                             <div class="form__dropdown-items"></div>
                         </div>
                         <input type="number" id="cantidad" class="form__input" min="0">
-                        <label for="cantidad" class="form__label" id="cantidadVal">{{ form.ingredient.dimension }}</label>
+                        <label for="cantidad" class="form__label" id="cantidadVal"></label>
                     </div>
                     <span class="form__ingredient-link" id="addIng">Добавить ингредиент</span>
                     <div class="form__field-group-ingredientes-container">
@@ -81,6 +82,7 @@
                     {% endif %}
                 </div>
             </div>
+
             <div class="form__group">
                 <label for="{{ form.time.id_for_label }}" class="form__label">{{ form.time.label }}</label>
                 <div class="form__field-group form__field-group_time">
