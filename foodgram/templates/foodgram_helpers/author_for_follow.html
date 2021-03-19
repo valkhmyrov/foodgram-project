@@ -1,4 +1,4 @@
-{% load thumbnail recipe_filters %}
+{% load recipe_filters %}
 <div class="card-user" data-author={{ author.id }}>
     <div class="card-user__header">
         <a href="{% url 'profile' author.username %}" class="card-user__title">{{ author.first_name }}</a>

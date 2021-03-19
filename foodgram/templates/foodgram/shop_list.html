@@ -6,9 +6,7 @@
 {% block title %}Список покупок{% endblock %}
 {% block content %}
 <main class="main container">
-    <div class="main__header">
-        <h1 class="main__title">Список покупок</h1>
-    </div>
+    {% include "helper_templates/name.html" with name='Список покупок' %}
     {% if not page %}
     <div class="custom-center-block">
         <p class="custom-text-block">Список покупок пуст</p>

@@ -17,13 +17,11 @@
 {% url 'recipe_edit' recipe.slug as recipe_edit %}
 {% with request_url=request.path|decode_path %}
 <main class="main container">
-    <div class="main__header">
-        {% if request_url == recipe_edit %}
-            <h1 class="main__title">Редактирование рецепта</h1>
-        {% else %}
-            <h1 class="main__title">Создание рецепта</h1>
-        {% endif %}
-    </div>
+    {% if request_url == recipe_edit %}
+        {% include "helper_templates/name.html" with name='Редактирование рецепта' %}
+    {% else %}
+        {% include "helper_templates/name.html" with name='Создание рецепта' %}
+    {% endif %}
     <div class="form-container"> 
         <form class="form" method="post" enctype="multipart/form-data">
             {% csrf_token %}
