@@ -13,7 +13,7 @@
                 <h1 class="single-card__title">{{ recipe.title }}</h1>
                 <div class="single-card__favorite">
                     {% if request.user.is_authenticated %}
-                        {% if recipe|check_favorite:request.user %}
+                        {% if recipe.favorite_flag %}
                             <button class="button button_style_none" name="favorites"><span class="icon-favorite icon-favorite_big icon-favorite_active"></span></button>
                             <div class="single-card__favorite-tooltip tooltip">Добавлено в избранное</div>
                         {% else %}

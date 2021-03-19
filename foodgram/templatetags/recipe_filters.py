@@ -41,13 +41,6 @@ def recipe_count(author):
 
 
 @register.filter
-def check_favorite(recipe, user):
-    if recipe.favorite_user.filter(user=user):
-        return True
-    return False
-
-
-@register.filter
 def check_shoplist(recipe, user):
     if recipe.customer.filter(user=user):
         return True

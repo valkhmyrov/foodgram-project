@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator
 from django.db import models
 from django.db.models.deletion import CASCADE
+from django.db.models import Exists, OuterRef
 
 from foodgram_project.settings import SLUG_MAX_LENGTH
 
@@ -31,6 +32,14 @@ class Ingredient(models.Model):
         return self.name[0:30]
 
 
+class ReсipeQuerySet(models.QuerySet):
+    def get_favorites(self, user):
+        if user.is_authenticated:
+            subquery = Favorite.objects.filter(recipe=OuterRef('id'), user=user)
+            return Recipe.objects.annotate(favorite_flag=Exists(subquery))
+        return Recipe.objects.all()
+
+
 class Recipe(models.Model):
     author = models.ForeignKey(
         User,
@@ -57,6 +66,7 @@ class Recipe(models.Model):
         max_length=SLUG_MAX_LENGTH
     )
     pub_date = models.DateTimeField('Время публикации', auto_now_add=True, )
+    objects = ReсipeQuerySet.as_manager()
 
     class Meta:
         ordering = ['-pub_date']
@@ -64,6 +74,11 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.title[0:30]
+
+
+#class ReсipeQuerySet(models.QuerySet):
+#    def get_favorites(self, user):
+#        return self.objects.annotate(favorite_tag=Exists(Favorite.objects.filter(user=user))
 
 
 class QuantityOfIngredient(models.Model):
