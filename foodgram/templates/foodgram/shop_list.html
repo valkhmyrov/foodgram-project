@@ -9,6 +9,11 @@
     <div class="main__header">
         <h1 class="main__title">Список покупок</h1>
     </div>
+    {% if not page %}
+    <div class="custom-center-block">
+        <p class="custom-text-block">Список покупок пуст</p>
+    </div>
+    {% endif %}
     <div class="card-list card-list_column">
         <ul class="shopping-list">
             {% for item in page %}
@@ -20,10 +25,6 @@
                 </div>
                 <a href="{% url 'purchases_delete' item.recipe.id %}" class="shopping-list__button link">Удалить</a>
             </li>
-            {% empty %}
-                <div class="custom-center-block">
-                    <p class="custom-text-block">Список покупок пуст</p>
-                </div>
             {% endfor %}
         </ul>
         {% if page %}

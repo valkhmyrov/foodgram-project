@@ -9,13 +9,14 @@
     <div class="main__header">
         <h1 class="main__title">Мои подписки</h1>
     </div>
+    {% if not page %}
+        <div class="custom-center-block">
+            <p class="custom-text-block">У вас нет еще ни одной подписки.</p>
+        </div>
+    {% endif %}
     <div class="card-list">
         {% for item in page %}
             {% include "foodgram_helpers/author_for_follow.html" with author=item.author %}
-        {% empty %}
-            <div class="custom-center-block">
-                <p class="custom-text-block">У вас нет еще ни одной подписки.</p>
-            </div>
         {% endfor %}
     </div>
     {% include 'foodgram_helpers/paginator.html' %}

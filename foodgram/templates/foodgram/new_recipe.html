@@ -15,9 +15,10 @@
 
 {% block content %}
 {% url 'recipe_edit' recipe.slug as recipe_edit %}
+{% with request_url=request.path|decode_path %}
 <main class="main container">
     <div class="main__header">
-        {% if request.path|decode_path == recipe_edit %}
+        {% if request_url == recipe_edit %}
             <h1 class="main__title">Редактирование рецепта</h1>
         {% else %}
             <h1 class="main__title">Создание рецепта</h1>
@@ -110,7 +111,7 @@
                 </div>
             </div>
             <div class="form__footer">
-                {% if request.path|decode_path == recipe_edit %}
+                {% if request_url == recipe_edit %}
                     <button class="button button_style_blue">Сохранить</button>
                     <a style="margin-left: 2.5em" href="{% url 'recipe_delete' recipe.slug %}" class="form__ingredient-link">Удалить</a>
                 {% else %}
@@ -126,4 +127,5 @@
 <script src="{% static 'js/utils/debouncing.js' %}"></script>
 <script src="{% static 'js/api/Api.js' %}"></script>
 <script src="{% static 'formRecipe.js' %}"></script>
+{% endwith %}
 {% endblock %}
