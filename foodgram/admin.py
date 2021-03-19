@@ -3,10 +3,18 @@ from django.contrib import admin
 from .models import Favorite, Follow, Ingredient, QuantityOfIngredient, Recipe, ShopList, Tag
 
 
+class Quantity(admin.TabularInline):
+    model = QuantityOfIngredient
+    extra = 1
+
+
 class FoodgramRecipe(admin.ModelAdmin):
-    list_display = ['pk', 'title', 'author_short_name', 'text', 'time', 'pub_date', 'get_tags']
+    list_display = ['author_short_name', 'title', 'get_ingerdients', 'get_tags', 'pub_date']
+    fields = ('author', 'slug', 'title', 'tags', 'time', 'text', 'image')
     search_fields = ('title',)
     list_filter = ('author',)
+    autocomplete_fields = ('ingredients',)
+    inlines = (Quantity,)
     empty_value_display = '-пусто-'
 
     def get_tags(self, obj):
@@ -15,8 +23,12 @@ class FoodgramRecipe(admin.ModelAdmin):
     def author_short_name(self, obj):
         return (obj.author.get_short_name())
 
+    def get_ingerdients(self, obj):
+        return list(obj.ingredients.values_list('name', flat=True))
+
     author_short_name.short_description = 'Автор'
     get_tags.short_description = 'Теги'
+    get_ingerdients.short_description = 'Ингредиенты'
 
 
 class FoodgramTag(admin.ModelAdmin):

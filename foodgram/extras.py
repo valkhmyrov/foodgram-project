@@ -2,7 +2,8 @@ from django.shortcuts import get_object_or_404
 from django.utils.text import slugify
 
 from foodgram_project.settings import SLUG_MAX_LENGTH, SLUG_MAX_TEXT_LENGTH
-from .models import Ingredient, QuantityOfIngredient, Tag, Recipe
+
+from .models import Ingredient, QuantityOfIngredient, Recipe, Tag
 
 
 def getting_tags(request, tag_name):
