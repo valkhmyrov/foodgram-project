@@ -22,7 +22,7 @@ def index(request):
     tags = getting_tags(request, 'filter')
     if not tags:
         return redirect(reverse('index') + setting_all_tags())
-    recipes_list = Recipe.objects.get_favorites(
+    recipes_list = Recipe.objects.get_additional_attributes(
         request.user
     ).filter(
         tags__in=tags
@@ -43,7 +43,7 @@ def index(request):
 
 
 def recipe_view(request, slug):
-    recipe = get_object_or_404(Recipe.objects.get_favorites(request.user).prefetch_related('tags'), slug=slug)
+    recipe = get_object_or_404(Recipe.objects.get_additional_attributes(request.user).prefetch_related('tags'), slug=slug)
     context = {'recipe': recipe}
     return render(request, 'foodgram/recipe.html', context)
 
@@ -54,12 +54,14 @@ def profile(request, username):
     tags = getting_tags(request, 'filter')
     if not tags:
         return redirect(reverse('profile', args=[author.username]) + setting_all_tags())
-    recipes_list = author.recipes.filter(
-        tags__in=tags
+    recipes_list = Recipe.objects.filter(
+        author=author
+    ).get_additional_attributes(
+        request.user
+    ).filter(
+        tags__in=tags,
     ).distinct().select_related(
         'author'
-    ).prefetch_related(
-        'tags'
     )
     paginator = Paginator(recipes_list, settings.PAGINATOR_ITEMS)
     page_number = request.GET.get('page')
@@ -99,10 +101,12 @@ def favorites_index(request):
     tags = getting_tags(request, 'filter')
     if not tags:
         return redirect(reverse('favorites_index') + setting_all_tags())
-    favorites = request.user.favorite_recipe.filter(
-        recipe__tags__in=tags
+    favorites = Recipe.objects.filter(favorite_user__user=request.user).get_additional_attributes(
+        request.user
+    ).filter(
+        tags__in=tags,
     ).distinct().select_related(
-        'recipe'
+        'author'
     )
     paginator = Paginator(favorites, settings.PAGINATOR_ITEMS)
     page_number = request.GET.get('page')

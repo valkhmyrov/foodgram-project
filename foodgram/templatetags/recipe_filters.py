@@ -40,13 +40,6 @@ def recipe_count(author):
     return count
 
 
-@register.filter
-def check_shoplist(recipe, user):
-    if recipe.customer.filter(user=user):
-        return True
-    return False
-
-
 @register.filter()
 def tag_colour(tag_title):
     color = Tag.objects.filter(title=tag_title).values_list('checkbox_style', flat=True)[0]

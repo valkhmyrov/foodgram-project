@@ -16,8 +16,8 @@
     </div>
     {% endif %}
     <div class="card-list">
-        {% for item in page %}
-            {% include "foodgram_helpers/recipe_for_index.html" with recipe=item.recipe %}
+        {% for recipe in page %}
+            {% include "foodgram_helpers/recipe_for_index.html" %}
         {% endfor %}
     </div>
     {% include 'foodgram_helpers/paginator.html' %}

@@ -33,11 +33,13 @@ class Ingredient(models.Model):
 
 
 class ReсipeQuerySet(models.QuerySet):
-    def get_favorites(self, user):
+
+    def get_additional_attributes(self, user):
         if user.is_authenticated:
-            subquery = Favorite.objects.filter(recipe=OuterRef('id'), user=user)
-            return Recipe.objects.annotate(favorite_flag=Exists(subquery))
-        return Recipe.objects.all()
+            subquery_favorite = Favorite.objects.filter(recipe=OuterRef('pk'), user=user)
+            subquery_shoplist = ShopList.objects.filter(recipe=OuterRef('pk'), user=user)
+            return self.annotate(favorite_flag=Exists(subquery_favorite), shoplist_flag=Exists(subquery_shoplist))
+        return self.all()
 
 
 class Recipe(models.Model):
@@ -74,11 +76,6 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.title[0:30]
-
-
-#class ReсipeQuerySet(models.QuerySet):
-#    def get_favorites(self, user):
-#        return self.objects.annotate(favorite_tag=Exists(Favorite.objects.filter(user=user))
 
 
 class QuantityOfIngredient(models.Model):
