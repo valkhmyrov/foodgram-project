@@ -3,13 +3,13 @@ import json
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_http_methods
 from django.core.paginator import Paginator
 from django.db.models import Sum
 from django.http import JsonResponse
 from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.views.decorators.http import require_http_methods
 
 from .extras import getting_tags, recipe_save, setting_all_tags
 from .forms import RecipeForm
@@ -20,6 +20,7 @@ User = get_user_model()
 
 SUCCESS = JsonResponse({'success': True})
 FAILURE = JsonResponse({'success': False}, status=404)
+
 
 def index(request):
     tags_all = Tag.objects.all()

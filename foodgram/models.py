@@ -1,8 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator
 from django.db import models
-from django.db.models.deletion import CASCADE
 from django.db.models import Exists, OuterRef
+from django.db.models.deletion import CASCADE
 
 from foodgram_project.settings import SLUG_MAX_LENGTH
 
