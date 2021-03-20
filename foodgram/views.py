@@ -17,6 +17,9 @@ from .models import Favorite, Follow, Ingredient, QuantityOfIngredient, Recipe, 
 User = get_user_model()
 
 
+SUCCESS = JsonResponse({'success': True})
+FAILURE = JsonResponse({'success': False}, status=404)
+
 def index(request):
     tags_all = Tag.objects.all()
     tags = getting_tags(request, 'filter')
@@ -153,8 +156,8 @@ def purchase_add(request):
         recipe = get_object_or_404(Recipe, id=int(json_data['id']))
         purchase = ShopList(user=request.user, recipe=recipe)
         purchase.save()
-        return JsonResponse({'success': True})
-    return JsonResponse({'success': False})
+        return SUCCESS
+    return FAILURE
 
 
 # Происходит отправка удаления сразу двумя способами (GET и DELETE) со странички shoplist,
@@ -170,7 +173,7 @@ def purchase_delete(request, id):
             return redirect(reverse('index'))
         return redirect(reverse('shop_list_index'))
     if request.method == 'DELETE':
-        return JsonResponse({'success': True})
+        return SUCCESS
 
 
 @login_required
@@ -180,8 +183,8 @@ def subscription_add(request):
         author = get_object_or_404(User, id=int(json_data['id']))
         subscription = Follow(author=author, user=request.user)
         subscription.save()
-        return JsonResponse({'success': True})
-    return JsonResponse({'success': False})
+        return SUCCESS
+    return FAILURE
 
 
 @login_required
@@ -190,8 +193,8 @@ def subscription_delete(request, id):
         author = get_object_or_404(User, id=id)
         subscription = get_object_or_404(Follow, author=author, user=request.user)
         subscription.delete()
-        return JsonResponse({'success': True})
-    return JsonResponse({'success': False})
+        return SUCCESS
+    return FAILURE
 
 
 @login_required
@@ -201,8 +204,8 @@ def favorite_add(request):
         recipe = get_object_or_404(Recipe, id=int(json_data['id']))
         favorite = Favorite(user=request.user, recipe=recipe)
         favorite.save()
-        return JsonResponse({'success': True})
-    return JsonResponse({'success': False})
+        return SUCCESS
+    return FAILURE
 
 
 @login_required
@@ -211,8 +214,8 @@ def favorite_delete(request, id):
         recipe = get_object_or_404(Recipe, id=id)
         favorite = get_object_or_404(Favorite, user=request.user, recipe=recipe)
         favorite.delete()
-        return JsonResponse({'success': True})
-    return JsonResponse({'success': False})
+        return SUCCESS
+    return FAILURE
 
 
 @login_required
