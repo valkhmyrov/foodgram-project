@@ -34,10 +34,12 @@ class Ingredient(models.Model):
 
 class ReсipeQuerySet(models.QuerySet):
 
-    def get_additional_attributes(self, user):
+    def get_additional_attributes(self, user, tags=None):
         if user.is_authenticated:
             subquery_favorite = Favorite.objects.filter(recipe=OuterRef('pk'), user=user)
             subquery_shoplist = ShopList.objects.filter(recipe=OuterRef('pk'), user=user)
+            if tags:
+                return self.filter(tags__in=tags).annotate(favorite_flag=Exists(subquery_favorite), shoplist_flag=Exists(subquery_shoplist))
             return self.annotate(favorite_flag=Exists(subquery_favorite), shoplist_flag=Exists(subquery_shoplist))
         return self.all()
 
@@ -54,7 +56,7 @@ class Recipe(models.Model):
     image = models.ImageField('Загрузить фото', upload_to='foodgram_images/', help_text='Изображение')
     text = models.TextField('Описание', help_text='Текст рецепта')
     ingredients = models.ManyToManyField(Ingredient, through='QuantityOfIngredient')
-    tags = models.ManyToManyField(Tag, verbose_name='Тег', related_name='Recipe')
+    tags = models.ManyToManyField(Tag, verbose_name='Тег', related_name='recipe')
     time = models.IntegerField(
         'Время приготовления',
         validators=[MaxValueValidator(1440)],

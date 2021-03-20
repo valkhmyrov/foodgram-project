@@ -23,9 +23,8 @@ def index(request):
     if not tags:
         return redirect(reverse('index') + setting_all_tags())
     recipes_list = Recipe.objects.get_additional_attributes(
-        request.user
-    ).filter(
-        tags__in=tags
+        request.user,
+        tags
     ).distinct().select_related(
         'author'
     )
@@ -57,9 +56,8 @@ def profile(request, username):
     recipes_list = Recipe.objects.filter(
         author=author
     ).get_additional_attributes(
-        request.user
-    ).filter(
-        tags__in=tags,
+        request.user,
+        tags
     ).distinct().select_related(
         'author'
     )
@@ -102,9 +100,8 @@ def favorites_index(request):
     if not tags:
         return redirect(reverse('favorites_index') + setting_all_tags())
     favorites = Recipe.objects.filter(favorite_user__user=request.user).get_additional_attributes(
-        request.user
-    ).filter(
-        tags__in=tags,
+        request.user,
+        tags
     ).distinct().select_related(
         'author'
     )
