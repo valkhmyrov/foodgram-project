@@ -216,12 +216,12 @@ def favorite_delete(request, id):
 
 
 @login_required
-def new_recipe(request):
+def recipe_new(request):
     form = RecipeForm(request.POST or None, files=request.FILES or None)
     if form.is_valid():
         if recipe_save(request, form):
             return redirect('index')
-    return render(request, 'foodgram/new_recipe.html', {'form': form})
+    return render(request, 'foodgram/recipe_new.html', {'form': form})
 
 
 @login_required
@@ -246,7 +246,7 @@ def recipe_edit(request, slug):
         recipe_save(request, form)
         return redirect('recipe', recipe.slug)
     context = {'form': form, 'recipe': recipe}
-    return render(request, 'foodgram/new_recipe.html', context)
+    return render(request, 'foodgram/recipe_new.html', context)
 
 
 @login_required

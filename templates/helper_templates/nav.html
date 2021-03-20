@@ -7,7 +7,7 @@
 {% url 'follow_index' as follow_index %}
 {% url 'favorites_index' as favorites_index %}
 {% url 'shop_list_index' as shop_list_index %}
-{% url 'new_recipe' as new_recipe %}
+{% url 'recipe_new' as recipe_new %}
 {% with request_url=request.path|decode_path %}
 <header class="header">
         <nav class="nav">
@@ -18,8 +18,8 @@
                     {% if request.user.is_authenticated %}
                         <li class="nav__item {% if request_url == follow_index %} nav__item_active {% endif %}">
                             <a href="{% url 'follow_index' %}" class="nav__link link">Мои подписки</a></li>
-                        <li class="nav__item {% if request_url == new_recipe %} nav__item_active {% endif %}">
-                            <a href="{% url 'new_recipe' %}" class="nav__link link">Создать рецепт</a></li>
+                        <li class="nav__item {% if request_url == recipe_new %} nav__item_active {% endif %}">
+                            <a href="{% url 'recipe_new' %}" class="nav__link link">Создать рецепт</a></li>
                         <li class="nav__item {% if request_url == favorites_index %} nav__item_active {% endif %}">
                             <a href="{% url 'favorites_index' %}" class="nav__link link">Избранное</a></li>
                         <li class="nav__item {% if request_url == shop_list_index %} nav__item_active {% endif %}">
