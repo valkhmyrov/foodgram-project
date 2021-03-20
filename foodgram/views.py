@@ -3,6 +3,7 @@ import json
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_http_methods
 from django.core.paginator import Paginator
 from django.db.models import Sum
 from django.http import JsonResponse
@@ -160,13 +161,12 @@ def purchase_add(request):
     return FAILURE
 
 
-# Происходит отправка удаления сразу двумя способами (GET и DELETE) со странички shoplist,
+# Происходит отправка удаления сразу двумя способами (GET и DELETE) со странички shoplist, в браузере.
 # Тем самым вызывая ошибки. В темплейте shop_list.html закомментировал ShopList.js, в котором реализовано удаление.
-# Не доработка фронта, или моя проблема?
 @login_required
+@require_http_methods(["GET", "DELETE"])
 def purchase_delete(request, id):
-    recipe = get_object_or_404(Recipe, id=id)
-    purchase = get_object_or_404(ShopList, user=request.user, recipe=recipe)
+    purchase = get_object_or_404(ShopList, user=request.user, recipe=id)
     purchase.delete()
     if request.method == 'GET':
         if not request.user.shop_list.all():
@@ -174,6 +174,8 @@ def purchase_delete(request, id):
         return redirect(reverse('shop_list_index'))
     if request.method == 'DELETE':
         return SUCCESS
+    else:
+        return FAILURE
 
 
 @login_required
