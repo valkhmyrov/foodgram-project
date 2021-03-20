@@ -12,7 +12,7 @@ def getting_tags(request, tag_name):
 
 
 def setting_all_tags():
-    get_parameters = '?filter=' + '&filter='.join(Tag.objects.values_list('title', flat=True))
+    get_parameters = f"?filter={'&filter='.join(Tag.objects.values_list('title', flat=True))}"
     return get_parameters
 
 
@@ -21,9 +21,9 @@ def extract_ingredients(data):
     numbers = [key.replace('nameIngredient_', '') for key, val in data.items() if 'nameIngredient' in key]
     for number in numbers:
         output.append({
-            'name': data['nameIngredient_' + str(number)],
-            'quantity': int(data['valueIngredient_' + str(number)]),
-            'dimension': data['unitsIngredient_' + str(number)]
+            'name': data[f'nameIngredient_{str(number)}'],
+            'quantity': int(data[f'valueIngredient_{str(number)}']),
+            'dimension': data[f'unitsIngredient_{str(number)}']
         })
     return output
 

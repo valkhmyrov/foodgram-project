@@ -24,4 +24,4 @@ class RecipeForm(forms.ModelForm):
             return self.add_error(None, 'Исключите дублирование ингредиентов')
         for ingredient in self.ingredients:
             if not Ingredient.objects.filter(name=ingredient['name'], dimension=ingredient['dimension']):
-                return self.add_error(None, 'Ингредиента "' + ingredient['name'] + '" нет.')
+                return self.add_error(None, f"Ингредиента \"{ingredient['name']}\" нет.")

@@ -21,7 +21,7 @@ def index(request):
     tags_all = Tag.objects.all()
     tags = getting_tags(request, 'filter')
     if not tags:
-        return redirect(reverse('index') + setting_all_tags())
+        return redirect(f"{reverse('index')}{setting_all_tags()}")
     recipes_list = Recipe.objects.get_additional_attributes(
         request.user,
         tags
@@ -31,7 +31,7 @@ def index(request):
     paginator = Paginator(recipes_list, settings.PAGINATOR_ITEMS)
     page_number = request.GET.get('page')
     if page_number and int(page_number) not in range(1, paginator.num_pages+1):
-        return redirect(reverse('index') + '?filter=' + '&filter='.join(tags.values_list('title', flat=True)))
+        return redirect(f"{reverse('index')}?filter={'&filter='.join(tags.values_list('title', flat=True))}")
     page = paginator.get_page(page_number)
     context = {
         'page': page,
@@ -42,7 +42,9 @@ def index(request):
 
 
 def recipe_view(request, slug):
-    recipe = get_object_or_404(Recipe.objects.get_additional_attributes(request.user).prefetch_related('tags'), slug=slug)
+    recipe = get_object_or_404(
+        Recipe.objects.get_additional_attributes(request.user).prefetch_related('tags'), slug=slug
+    )
     context = {'recipe': recipe}
     return render(request, 'foodgram/recipe.html', context)
 
@@ -52,7 +54,7 @@ def profile(request, username):
     tags_all = Tag.objects.all()
     tags = getting_tags(request, 'filter')
     if not tags:
-        return redirect(reverse('profile', args=[author.username]) + setting_all_tags())
+        return redirect(f"{reverse('profile', args=[author.username])}{setting_all_tags()}")
     recipes_list = Recipe.objects.filter(
         author=author
     ).get_additional_attributes(
@@ -65,11 +67,8 @@ def profile(request, username):
     page_number = request.GET.get('page')
     if page_number and int(page_number) not in range(1, paginator.num_pages+1):
         return redirect(
-            reverse(
-                'profile', args=[author.username]
-            ) + '?filter=' + '&filter='.join(
-                tags.values_list('title', flat=True)
-            )
+            f"{reverse('profile', args=[author.username])}?filter="
+            f"{'&filter='.join(tags.values_list('title', flat=True))}"
         )
     page = paginator.get_page(page_number)
     context = {
@@ -98,7 +97,7 @@ def favorites_index(request):
     tags_all = Tag.objects.all()
     tags = getting_tags(request, 'filter')
     if not tags:
-        return redirect(reverse('favorites_index') + setting_all_tags())
+        return redirect(f"{reverse('favorites_index')}{setting_all_tags()}")
     favorites = Recipe.objects.filter(favorite_user__user=request.user).get_additional_attributes(
         request.user,
         tags
@@ -108,9 +107,7 @@ def favorites_index(request):
     paginator = Paginator(favorites, settings.PAGINATOR_ITEMS)
     page_number = request.GET.get('page')
     if page_number and int(page_number) not in range(1, paginator.num_pages+1):
-        return redirect(
-            reverse('favorites_index') + '?filter=' + '&filter='.join(tags.values_list('title', flat=True))
-        )
+        return redirect(f"{reverse('favorites_index')}?filter={'&filter='.join(tags.values_list('title', flat=True))}")
     page = paginator.get_page(page_number)
     context = {'page': page, 'paginator': paginator, 'tags': tags_all}
     return render(request, 'foodgram/favorites.html', context)
