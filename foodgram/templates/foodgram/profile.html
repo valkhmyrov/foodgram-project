@@ -3,10 +3,11 @@
 {% block stylesheet %}
     <link rel="stylesheet" href="{% static './pages/index.css'%}">
 {% endblock %}
-{% block title %}{{ author.first_name }}{% endblock %}
+{% block title %}{% firstof author.get_full_name author.username %}{% endblock %}
 {% block content %}
+{% firstof author.get_full_name author.username as author_name %}
 <main class="main container">
-    {% include "helper_templates/name.html" with name=author.first_name include_tags=True %}
+    {% include "helper_templates/name.html" with name=author_name include_tags=True %}
     {% if request.user.is_authenticated and request.user != author %}
         <div class="author-subscribe" data-author="{{ author.id }}">
         {% if author|check_follower:request.user %}

@@ -1,7 +1,7 @@
 {% load recipe_filters %}
 <div class="card-user" data-author={{ author.id }}>
     <div class="card-user__header">
-        <a href="{% url 'profile' author.username %}" class="card-user__title">{{ author.first_name }}</a>
+        <a href="{% url 'profile' author.username %}" class="card-user__title">{% firstof author.get_full_name author.username %}</a>
     </div>
     <div class="card-user__body">
         <ul class="card-user__items">
