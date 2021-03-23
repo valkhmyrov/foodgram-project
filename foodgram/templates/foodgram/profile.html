@@ -6,11 +6,7 @@
 {% block title %}{{ author.first_name }}{% endblock %}
 {% block content %}
 <main class="main container">
-    <div class="main__header">
-        <h1 class="main__title">{{ author.first_name }}</h1>
-        {% include "foodgram_helpers/tags.html" %}
-    </div>
-
+    {% include "helper_templates/name.html" with name=author.first_name include_tags=True %}
     {% if request.user.is_authenticated and request.user != author %}
         <div class="author-subscribe" data-author="{{ author.id }}">
         {% if author|check_follower:request.user %}

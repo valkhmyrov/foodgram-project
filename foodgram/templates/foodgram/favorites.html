@@ -6,10 +6,7 @@
 {% block title %}Избранное{% endblock %}
 {% block content %}
 <main class="main container">
-    <div class="main__header">
-        <h1 class="main__title">Избранное</h1>
-        {% include "foodgram_helpers/tags.html" %}
-    </div>
+    {% include "helper_templates/name.html" with name="Избранное" include_tags=True %}
     {% if not page %}
     <div class="recipe__title">
         <p class="recipe__title">Вы еще ничего не выбрали.</p>
