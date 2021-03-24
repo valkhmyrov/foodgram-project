@@ -57,7 +57,7 @@ class FollowAdmin(admin.ModelAdmin):
         return (obj.user.get_short_name())
 
     author_short_name.short_description = 'Автор'
-    user_short_name.short_description = 'Автор'
+    user_short_name.short_description = 'Подписчик'
 
 
 class ShopListAdmin(admin.ModelAdmin):

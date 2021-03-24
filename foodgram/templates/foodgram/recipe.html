@@ -13,8 +13,7 @@
                 <h1 class="single-card__title">{{ recipe.title }}</h1>
                 <div class="single-card__favorite">
                     {% if request.user.is_authenticated %}
-                        <button class="button button_style_none" name="favorites"{{ recipe.favorite_flag|yesno:",data-out" }}><span class="icon-favorite icon-favorite_big {{ recipe.favorite_flag|yesno:"icon-favorite_active," }}"></span></button>
-                        <div class="single-card__favorite-tooltip tooltip">{{ recipe.favorite_flag|yesno:"Добавлено в избранное,Добавить в избранное" }}</div>
+                        {% include "foodgram_helpers/favorite_star.html" with help_text=True star_size="icon-favorite_big" %}
                     {% endif %}
                 </div>
             </div>
