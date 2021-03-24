@@ -31,11 +31,7 @@
             </div>
             {% if request.user.is_authenticated %}
                 <ul class="single-card__items">
-                {% if recipe.shoplist_flag %}
-                    <li class="single-card__item"><button class="button button_style_light-blue-outline" name="purchases"><span class="icon-check"></span> Рецепт добавлен</button></li>
-                {% else %}
-                    <li class="single-card__item"><button class="button button_style_blue" name="purchases" data-out><span class="icon-plus"></span> Добавить в покупки</button></li>
-                {% endif %}
+                {% include "foodgram_helpers/shop_button.html" with start_tag='<li class="single-card__item">' end_tag='</li>'  %}
                 {% if request.user != recipe.author %}
                     {% include "foodgram_helpers/follower_button.html" with author=recipe.author start_tag='<li class="single-card__item">' end_tag='</li>' %}
                 {% endif %}

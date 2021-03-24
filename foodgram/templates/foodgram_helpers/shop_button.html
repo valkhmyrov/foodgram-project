@@ -1,0 +1,3 @@
+{{ start_tag }}<button class="button {{ recipe.shoplist_flag|yesno:'button_style_light-blue-outline,button_style_light-blue' }}" 
+    name="purchases" {{ recipe.shoplist_flag|yesno:",data-out" }}><span class="icon-check {{ button_icon }}">
+    </span>{{ recipe.shoplist_flag|yesno:" Рецепт добавлен, Добавить в покупки" }}</button>{{ end_tag }}
