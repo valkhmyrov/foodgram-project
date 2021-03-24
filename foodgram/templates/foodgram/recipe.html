@@ -13,13 +13,8 @@
                 <h1 class="single-card__title">{{ recipe.title }}</h1>
                 <div class="single-card__favorite">
                     {% if request.user.is_authenticated %}
-                        {% if recipe.favorite_flag %}
-                            <button class="button button_style_none" name="favorites"><span class="icon-favorite icon-favorite_big icon-favorite_active"></span></button>
-                            <div class="single-card__favorite-tooltip tooltip">Добавлено в избранное</div>
-                        {% else %}
-                            <button class="button button_style_none" name="favorites" data-out><span class="icon-favorite icon-favorite_big"></span></button>
-                            <div class="single-card__favorite-tooltip tooltip">Добавить в избранное</div>
-                        {% endif %}
+                        <button class="button button_style_none" name="favorites"{{ recipe.favorite_flag|yesno:",data-out" }}><span class="icon-favorite icon-favorite_big {{ recipe.favorite_flag|yesno:"icon-favorite_active," }}"></span></button>
+                        <div class="single-card__favorite-tooltip tooltip">{{ recipe.favorite_flag|yesno:"Добавлено в избранное,Добавить в избранное" }}</div>
                     {% endif %}
                 </div>
             </div>
@@ -45,11 +40,7 @@
                     <li class="single-card__item"><button class="button button_style_blue" name="purchases" data-out><span class="icon-plus"></span> Добавить в покупки</button></li>
                 {% endif %}
                 {% if request.user != recipe.author %}
-                    {% if recipe.author|check_follower:request.user %}
-                        <li class="single-card__item"><button class="button button_style_light-blue button_size_subscribe" name="subscribe">Отписаться от автора</button></li>
-                    {% else %}
-                    <li class="single-card__item"><button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>Подписаться на автора</button></li>
-                    {% endif %}
+                    {% include "foodgram_helpers/follower_button.html" with author=recipe.author start_tag='<li class="single-card__item">' end_tag='</li>' %}
                 {% endif %}
                 </ul>
             {% endif %}
@@ -64,7 +55,7 @@
             </div>
             <div class="single-card__section">
                 <h3 class="single-card__section-title">Описание:</h3>
-                <p class=" single-card__section-text">{{ recipe.text|linebreaksbr}}</p>
+                <p class=" single-card__section-text">{{ recipe.text|linebreaksbr }}</p>
             </div>
         </div>
     </div>

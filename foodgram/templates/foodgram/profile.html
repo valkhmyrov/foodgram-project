@@ -10,11 +10,7 @@
     {% include "helper_templates/name.html" with name=author_name include_tags=True %}
     {% if request.user.is_authenticated and request.user != author %}
         <div class="author-subscribe" data-author="{{ author.id }}">
-        {% if author|check_follower:request.user %}
-            <p style="padding: 0 0 2em 0;"><button class="button button_style_light-blue button_size_subscribe" name="subscribe">Отписаться от автора</button></p>
-        {% else %}
-            <p style="padding: 0 0 2em 0;"><button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>Подписаться на автора</button></p>
-        {% endif %}
+            {% include "foodgram_helpers/follower_button.html" with author=author start_tag='<p style="padding: 0 0 2em 0;">' end_tag='</p>'  %}
         </div>
     {% endif %}
     <div class="card-list">
