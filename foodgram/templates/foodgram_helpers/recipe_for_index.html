@@ -7,7 +7,7 @@
             {% include "foodgram_helpers/tags_on_recipe.html" with class_name="card__item" %}
         </ul>
         <div class="card__items card__items_column">
-            <p class="card__text"><span class="icon-time"></span> {{ recipe.time }} мин.</p>
+            {% include "foodgram_helpers/coocking_time.html" with class_name="card__text" coocking_time=recipe.time %}
             <p class="card__text"><span class="icon-user"></span> <a href="{% url 'profile' recipe.author.username %}" style="color: black">{% firstof recipe.author.get_full_name recipe.author.username %}</a></p>
         </div>
     </div>

@@ -21,7 +21,7 @@
                 {% include "foodgram_helpers/tags_on_recipe.html" with class_name="single-card__item" %}
             </ul>
             <div class="single-card__items single-card__items_column">
-                <p class="single-card__text"><span class="icon-time"></span> {{ recipe.time }} мин.</p>
+                {% include "foodgram_helpers/coocking_time.html" with class_name="single-card__text" coocking_time=recipe.time %}
                 <ul class="single-card__items">
                     <li class="single-card__item"><p class="single-card__text"><span class="icon-user"></span> <a href="{% url 'profile' recipe.author.username %}" style="color: black">{% firstof recipe.author.get_full_name recipe.author.username %}</a></p></li>
                     {% if request.user == recipe.author %}

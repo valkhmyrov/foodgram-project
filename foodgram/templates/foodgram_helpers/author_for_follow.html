@@ -10,8 +10,8 @@
                 <div class="recipe">
                     <img src="{{ recipe.image.url }}" alt="какой-то-текст" class="recipe__image"></a>
                     <a class="recipe__title" href="{% url 'recipe' recipe.slug %}" target="_self">{{ recipe.title }}</a>
-                    <p class="recipe__text"><span class="icon-time"></span> {{ recipe.time }} мин</p>
-                </div>    
+                    {% include "foodgram_helpers/coocking_time.html" with class_name="recipe__text" coocking_time=recipe.time %}
+                </div>
               </li>
             {% endfor %}
             {% if author|recipe_count %}

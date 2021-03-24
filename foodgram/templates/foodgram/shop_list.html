@@ -19,7 +19,7 @@
                 <div class="recipe recipe_reverse">
                     <img src="{{ item.recipe.image.url }}" alt="какой-то текст" class="recipe__image recipe__image_big">
                     <a class="recipe__title" href="{% url 'recipe' item.recipe.slug %}" target="_self">{{ item.recipe.title }}</a>
-                    <p class="recipe__text"><span class="icon-time"></span> {{ item.recipe.time }} мин.</p>
+                    {% include "foodgram_helpers/coocking_time.html" with class_name="recipe__text" coocking_time=item.recipe.time %}
                 </div>
                 <a href="{% url 'purchases_delete' item.recipe.id %}" class="shopping-list__button link">Удалить</a>
             </li>
