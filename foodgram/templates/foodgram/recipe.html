@@ -18,9 +18,7 @@
                 </div>
             </div>
             <ul class="single-card__items">
-                {% for tag in recipe.tags.all %}
-                    <li class="single-card__item"><span class="badge badge_style_{{ tag.checkbox_style }}">{{ tag.title }}</span></li>
-                {% endfor %}
+                {% include "foodgram_helpers/tags_on_recipe.html" with class_name="single-card__item" %}
             </ul>
             <div class="single-card__items single-card__items_column">
                 <p class="single-card__text"><span class="icon-time"></span> {{ recipe.time }} мин.</p>
