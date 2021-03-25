@@ -33,18 +33,6 @@ def paginator_manager(request, number):
 
 
 @register.filter()
-def tag_colour(tag_title):
-    color = Tag.objects.filter(title=tag_title).values_list('checkbox_style', flat=True)[0]
-    return color
-
-
-@register.filter()
-def tag_id(tag_title):
-    id = Tag.objects.filter(title=tag_title).values_list('id', flat=True)[0]
-    return id
-
-
-@register.filter()
 def decode_path(path):
     return iri_to_uri(path)
 

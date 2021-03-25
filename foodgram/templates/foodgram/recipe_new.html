@@ -40,8 +40,8 @@
                     <div class="tags">
                         {% for field in form.tags %}
                         <div class="tags__item">
-                            <input type="checkbox" name="tags" value="{{ field.choice_label|tag_id}}" id="{{ field.id_for_label }}" 
-                                class="tags__checkbox tags__checkbox_style_{{ field.choice_label|tag_colour }}"
+                            <input type="checkbox" name="tags" value="{{ field.data.value.instance.id }}" id="{{ field.id_for_label }}" 
+                                class="tags__checkbox tags__checkbox_style_{{ field.data.value.instance.checkbox_style }}"
                                 {% if field.data.selected %}checked{% endif %}>
                             <label for="{{ field.id_for_label }}" class="tags__label">{{ field.choice_label }}</label>
                         </div>
