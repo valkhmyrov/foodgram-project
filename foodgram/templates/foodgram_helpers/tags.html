@@ -5,7 +5,7 @@
         <li class="tags__item">
             <a id="{{ tag.id }}" class="tags__checkbox tags__checkbox_style_{{ tag.checkbox_style }}
             {% if tag.title in filter_tag %} tags__checkbox_active {% endif %}" 
-                {% if filter_tag|length_is:"1" and tag.title in filter_tag %}
+                {% if filter_tag|length_is:"1" and tag.title == filter_tag.0 %}
                     href="#">
                 {% else %}
                     href="?{{request|filter_manager:tag}}">

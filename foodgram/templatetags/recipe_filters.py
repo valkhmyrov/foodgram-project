@@ -32,14 +32,6 @@ def paginator_manager(request, number):
     return new_request.urlencode()
 
 
-@register.filter
-def recipe_count(author):
-    count = author.recipes.count() - 3
-    if count < 1:
-        return False
-    return count
-
-
 @register.filter()
 def tag_colour(tag_title):
     color = Tag.objects.filter(title=tag_title).values_list('checkbox_style', flat=True)[0]

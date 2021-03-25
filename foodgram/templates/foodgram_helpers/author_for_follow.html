@@ -14,7 +14,7 @@
                 </div>
               </li>
             {% endfor %}
-            {% with count=author|recipe_count %}
+            {% with count=author.recipes.count|add:"-3" %}
             {% if count %}
               <li class="card-user__item">
                 <a href="{% url 'profile' author.username %}" class="card-user__link link">Еще {{ count }} {{ count|declension }}</a>
