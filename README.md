@@ -1,6 +1,8 @@
 # Foodgram project
 This is my cource work ar Yandex Praktikum. Example at [valkhmyrov.cf](http://valkhmyrov.cf)
 
+[![foodgram-project](https://github.com/valkhmyrov/foodgram-project/actions/workflows/main.yml/badge.svg)](https://github.com/valkhmyrov/foodgram-project/actions/workflows/main.yml)
+
 ![example workflow name](https://github.com/valkhmyrov/foodgram-project/workflows/foodgram-project/badge.svg)
 
 ## Getting Started for manual installation
