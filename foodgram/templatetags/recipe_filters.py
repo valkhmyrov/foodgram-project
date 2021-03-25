@@ -55,6 +55,7 @@ def check_follower(author, user):
         return True
     return False
 
+
 @register.filter
 def declension(number):
     if number in [11, 12, 13, 14]:
