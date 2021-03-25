@@ -55,7 +55,7 @@ def recipe_view(request, slug):
 
 
 def profile(request, username):
-    author = get_object_or_404(User, username=username)
+    author = get_object_or_404(User.objects.prefetch_related('follower'), username=username)
     tags_all = Tag.objects.all()
     tags = getting_tags(request, 'filter')
     if not tags:

@@ -1,7 +1,6 @@
 from django import template
 from django.utils.encoding import iri_to_uri
 
-from foodgram.models import Tag
 
 register = template.Library()
 

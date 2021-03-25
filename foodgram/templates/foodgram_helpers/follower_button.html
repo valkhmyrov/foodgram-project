@@ -1,6 +1,6 @@
 {% load recipe_filters %}
 {{ start_tag }}<button class="button button_style_light-blue button_size_subscribe" name="subscribe" 
-    {% if author|check_follower:request.user %}
+    {% if recipe.follow_flag or author|check_follower:request.user %}
         >Отписаться от автора
     {% else %} 
         data-out>Подписаться на автора
