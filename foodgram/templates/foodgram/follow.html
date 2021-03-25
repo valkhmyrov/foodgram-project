@@ -7,11 +7,7 @@
 {% block content %}
 <main class="main container">
     {% include "helper_templates/name.html" with name='Мои подписки' %}
-    {% if not page %}
-        <div class="custom-center-block">
-            <p class="custom-text-block">У вас нет еще ни одной подписки.</p>
-        </div>
-    {% endif %}
+    {% include "foodgram_helpers/message.html" with message='У вас нет еще ни одной подписки.' %}
     <div class="card-list">
         {% for item in page %}
             {% include "foodgram_helpers/author_for_follow.html" with author=item.author %}
