@@ -69,9 +69,9 @@
                         <div class="form__field-item-ingredient" id="{{ forloop.counter|add:100 }}">
                             <span> {{ ingr.name }} {{ ingr.quantity }}{{ ingr.dimension }}.</span>
                             <span class="form__field-item-delete"></span>
-                            <input id="nameIngredient_{{ forloop.counter|add:100 }}" name="nameIngredient_{{ forloop.counter|add:100 }}" type="hidden" value="{{ ingr.name }}">
-                            <input id="valueIngredient_{{ forloop.counter|add:100 }}" name="valueIngredient_{{ forloop.counter|add:100 }}" type="hidden" value="{{ ingr.quantity }}">
-                            <input id="unitsIngredient_{{ forloop.counter|add:100 }}" name="unitsIngredient_{{ forloop.counter|add:100 }}" type="hidden" value="{{ ingr.dimension }}">
+                            <input id="nameIngredient_pr_{{ forloop.counter }}" name="nameIngredient_pr_{{ forloop.counter }}" type="hidden" value="{{ ingr.name }}">
+                            <input id="valueIngredient_pr_{{ forloop.counter }}" name="valueIngredient_pr_{{ forloop.counter }}" type="hidden" value="{{ ingr.quantity }}">
+                            <input id="unitsIngredient_pr_{{ forloop.counter }}" name="unitsIngredient_pr_{{ forloop.counter }}" type="hidden" value="{{ ingr.dimension }}">
                         </div>
                         {% endfor %}
                     </div>
@@ -108,14 +108,7 @@
                     {% endif %}
                 </div>
             </div>
-            <div class="form__footer">
-                {% if request_url == recipe_edit %}
-                    <button class="button button_style_blue">Сохранить</button>
-                    <a style="margin-left: 2.5em" href="{% url 'recipe_delete' recipe.slug %}" class="form__ingredient-link">Удалить</a>
-                {% else %}
-                    <button class="button button_style_blue">Создать рецепт</button>
-                {% endif %}
-            </div>
+            {% include "foodgram_helpers/save_delete_buttons.html" %}
         </form>
 
   </form>
