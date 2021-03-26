@@ -6,10 +6,11 @@ from .models import Favorite, Follow, Ingredient, QuantityOfIngredient, Recipe, 
 class Quantity(admin.TabularInline):
     model = QuantityOfIngredient
     extra = 1
+    min_num = 1
 
 
 class FoodgramRecipe(admin.ModelAdmin):
-    list_display = ['author_short_name', 'title', 'get_ingerdients', 'get_tags', 'pub_date']
+    list_display = ['title', 'get_favorites', 'author_short_name', 'get_ingredients', 'get_tags', 'pub_date']
     fields = ('author', 'slug', 'title', 'tags', 'time', 'text', 'image')
     search_fields = ('title',)
     list_filter = ('author',)
@@ -21,14 +22,18 @@ class FoodgramRecipe(admin.ModelAdmin):
         return list(obj.tags.values_list('title', flat=True))
 
     def author_short_name(self, obj):
-        return (obj.author.get_short_name())
+        return obj.author.get_full_name() or obj.author.username
 
-    def get_ingerdients(self, obj):
+    def get_ingredients(self, obj):
         return list(obj.ingredients.values_list('name', flat=True))
+
+    def get_favorites(self, obj):
+        return obj.favorite_user.count()
 
     author_short_name.short_description = 'Автор'
     get_tags.short_description = 'Теги'
-    get_ingerdients.short_description = 'Ингредиенты'
+    get_ingredients.short_description = 'Ингредиенты'
+    get_favorites.short_description = 'Счетчик в избранном'
 
 
 class FoodgramTag(admin.ModelAdmin):
