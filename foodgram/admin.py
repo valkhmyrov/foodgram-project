@@ -56,10 +56,10 @@ class FollowAdmin(admin.ModelAdmin):
     list_display = ('pk', 'author_short_name', 'user_short_name')
 
     def author_short_name(self, obj):
-        return (obj.author.get_short_name())
+        return obj.author.get_full_name() or obj.author.username
 
     def user_short_name(self, obj):
-        return (obj.user.get_short_name())
+        return obj.user.get_full_name() or obj.user.username
 
     author_short_name.short_description = 'Автор'
     user_short_name.short_description = 'Подписчик'
