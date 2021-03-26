@@ -28,10 +28,7 @@ def extract_ingredients(data):
     return output
 
 
-def recipe_save(request, form):
-    data = []
-    recipe = form.save(commit=False)
-    recipe.author = request.user
+def slug_generate(recipe, form):
     slug_candidate = slug_original = slugify(recipe.title, allow_unicode=True)[:SLUG_MAX_TEXT_LENGTH]
     index = 0
     while Recipe.objects.filter(slug=slug_candidate):
@@ -40,12 +37,23 @@ def recipe_save(request, form):
     if index > int((SLUG_MAX_LENGTH - SLUG_MAX_TEXT_LENGTH) * '9'):
         form.add_error('title', 'С таким заголовком уже много рецептов!')
         return False
-    recipe.slug = slug_candidate
+    return slug_candidate
+
+
+def recipe_save(request, form):
+    data = []
+    recipe = form.save(commit=False)
+    recipe.author = request.user
+    slug = slug_generate(recipe, form)
+    if not slug:
+        return False
+    recipe.slug = slug
     recipe.save()
     ingredients = extract_ingredients(request.POST)
     for item in ingredients:
         ingredient = get_object_or_404(Ingredient, name=item['name'], dimension=item['dimension'])
         data.append(QuantityOfIngredient(ingredient=ingredient, recipe=recipe, quantity=item['quantity']))
+    recipe.ingredients.clear()
     QuantityOfIngredient.objects.bulk_create(data)
     form.save_m2m()
     return True
