@@ -52,7 +52,7 @@ class ReсipeQuerySet(models.QuerySet):
                 shoplist_flag=Exists(subquery_shoplist),
                 follow_flag=Exists(subquery_follow)
             )
-        return self.all()
+        return self
 
 
 class Recipe(models.Model):
@@ -81,6 +81,7 @@ class Recipe(models.Model):
         max_length=SLUG_MAX_LENGTH
     )
     pub_date = models.DateTimeField('Время публикации', auto_now_add=True, )
+
     objects = ReсipeQuerySet.as_manager()
 
     class Meta:
@@ -98,6 +99,9 @@ class QuantityOfIngredient(models.Model):
 
     class Meta:
         verbose_name_plural = 'Количество ингредиентов'
+        constraints = [
+            models.UniqueConstraint(fields=['ingredient', 'recipe'], name='QuantityOfIngredient unique together'),
+            ]
 
     def __str__(self):
         ingredient = self.ingredient.name
@@ -114,6 +118,7 @@ class Follow(models.Model):
         ordering = ['user', 'author']
         constraints = [
             models.UniqueConstraint(fields=['user', 'author'], name='unique together'),
+            models.CheckConstraint(check=~models.Q(user=models.F('author')), name='disable self following')
             ]
         verbose_name_plural = 'Подписка на авторов'
 
@@ -158,7 +163,7 @@ class ShopList(models.Model):
     )
 
     class Meta:
-        verbose_name_plural = 'Список покупок'
+        verbose_name_plural = 'Списки покупок'
 
     def __str__(self):
         user = self.user.username
