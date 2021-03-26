@@ -33,7 +33,7 @@
                 <ul class="single-card__items">
                 {% include "foodgram_helpers/shop_button.html" with start_tag='<li class="single-card__item">' end_tag='</li>'  %}
                 {% if request.user != recipe.author %}
-                    {% include "foodgram_helpers/follower_button.html" with start_tag='<li class="single-card__item">' end_tag='</li>' %}
+                    {% include "foodgram_helpers/follower_button.html" with selector=recipe.follow_flag start_tag='<li class="single-card__item">' end_tag='</li>' %}
                 {% endif %}
                 </ul>
             {% endif %}

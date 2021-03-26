@@ -37,13 +37,6 @@ def decode_path(path):
 
 
 @register.filter
-def check_follower(author, user):
-    if user.follower.filter(author=author):
-        return True
-    return False
-
-
-@register.filter
 def declension(number):
     if number in [11, 12, 13, 14]:
         return 'рецептов'

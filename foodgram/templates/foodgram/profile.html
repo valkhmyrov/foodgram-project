@@ -10,7 +10,7 @@
     {% include "helper_templates/name.html" with name=author_name include_tags=True %}
     {% if request.user.is_authenticated and request.user != author %}
         <div class="author-subscribe" data-author="{{ author.id }}">
-            {% include "foodgram_helpers/follower_button.html" with author=author start_tag='<p style="padding: 0 0 2em 0;">' end_tag='</p>'  %}
+            {% include "foodgram_helpers/follower_button.html" with selector=page.0.follow_flag start_tag='<p style="padding: 0 0 2em 0;">' end_tag='</p>'  %}
         </div>
     {% endif %}
     <div class="card-list">

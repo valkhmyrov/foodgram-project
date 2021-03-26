@@ -38,14 +38,20 @@ class ReсipeQuerySet(models.QuerySet):
         if user.is_authenticated:
             subquery_favorite = Favorite.objects.filter(recipe=OuterRef('pk'), user=user)
             subquery_shoplist = ShopList.objects.filter(recipe=OuterRef('pk'), user=user)
+            subquery_follow = Follow.objects.filter(author=OuterRef('author'), user=user)
             if tags:
                 return self.filter(
                     tags__in=tags
                 ).annotate(
                     favorite_flag=Exists(subquery_favorite),
-                    shoplist_flag=Exists(subquery_shoplist)
+                    shoplist_flag=Exists(subquery_shoplist),
+                    follow_flag=Exists(subquery_follow)
                 )
-            return self.annotate(favorite_flag=Exists(subquery_favorite), shoplist_flag=Exists(subquery_shoplist))
+            return self.annotate(
+                favorite_flag=Exists(subquery_favorite),
+                shoplist_flag=Exists(subquery_shoplist),
+                follow_flag=Exists(subquery_follow)
+            )
         return self.all()
 
 
