@@ -19,7 +19,7 @@ User = get_user_model()
 
 
 SUCCESS_POST = JsonResponse({'success': True}, status=201)
-SUCCESS_DELETE = JsonResponse({'success': True}, status=204)
+SUCCESS_DELETE = JsonResponse({'success': True}, status=202)
 FAILURE = JsonResponse({'success': False}, status=404)
 
 
@@ -154,8 +154,7 @@ def purchase_add(request):
     if request.method == 'POST':
         json_data = json.loads(request.body)
         recipe = get_object_or_404(Recipe, id=int(json_data['id']))
-        purchase = ShopList.objects.create(user=request.user, recipe=recipe)
-        purchase.save()
+        ShopList.objects.create(user=request.user, recipe=recipe)
         return SUCCESS_POST
     return FAILURE
 
@@ -173,8 +172,7 @@ def purchase_delete(request, id):
         return redirect(reverse('shop_list_index'))
     if request.method == 'DELETE':
         return SUCCESS_DELETE
-    else:
-        return FAILURE
+    return FAILURE
 
 
 @login_required
@@ -203,8 +201,7 @@ def favorite_add(request):
     if request.method == 'POST':
         json_data = json.loads(request.body)
         recipe = get_object_or_404(Recipe, id=int(json_data['id']))
-        favorite = Favorite(user=request.user, recipe=recipe)
-        favorite.save()
+        Favorite.objects.create(user=request.user, recipe=recipe)
         return SUCCESS_POST
     return FAILURE
 
