@@ -41,7 +41,6 @@ def index(request):
     page = paginator.get_page(page_number)
     context = {
         'page': page,
-        'paginator': paginator,
         'tags': tags_all
     }
     return render(request, 'foodgram/index.html', context)
@@ -80,7 +79,6 @@ def profile(request, username):
     context = {
         'author': author,
         'page': page,
-        'paginator': paginator,
         'tags': tags_all
     }
     return render(request, 'foodgram/profile.html', context)
@@ -94,7 +92,7 @@ def follow_index(request):
     if page_number and int(page_number) not in range(1, paginator.num_pages+1):
         return redirect(reverse('follow_index'))
     page = paginator.get_page(page_number)
-    context = {'page': page, 'paginator': paginator}
+    context = {'page': page}
     return render(request, 'foodgram/follow.html', context)
 
 
@@ -115,7 +113,7 @@ def favorites_index(request):
     if page_number and int(page_number) not in range(1, paginator.num_pages+1):
         return redirect(f"{reverse('favorites_index')}?filter={'&filter='.join(tags.values_list('title', flat=True))}")
     page = paginator.get_page(page_number)
-    context = {'page': page, 'paginator': paginator, 'tags': tags_all}
+    context = {'page': page, 'tags': tags_all}
     return render(request, 'foodgram/favorites.html', context)
 
 
