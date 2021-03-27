@@ -18,7 +18,8 @@ from .models import Favorite, Follow, Ingredient, QuantityOfIngredient, Recipe, 
 User = get_user_model()
 
 
-SUCCESS = JsonResponse({'success': True})
+SUCCESS_POST = JsonResponse({'success': True}, status=201)
+SUCCESS_DELETE = JsonResponse({'success': True}, status=204)
 FAILURE = JsonResponse({'success': False}, status=404)
 
 
@@ -158,7 +159,7 @@ def purchase_add(request):
         recipe = get_object_or_404(Recipe, id=int(json_data['id']))
         purchase = ShopList(user=request.user, recipe=recipe)
         purchase.save()
-        return SUCCESS
+        return SUCCESS_POST
     return FAILURE
 
 
@@ -174,7 +175,7 @@ def purchase_delete(request, id):
             return redirect(reverse('index'))
         return redirect(reverse('shop_list_index'))
     if request.method == 'DELETE':
-        return SUCCESS
+        return SUCCESS_DELETE
     else:
         return FAILURE
 
@@ -186,7 +187,7 @@ def subscription_add(request):
         author = get_object_or_404(User, id=int(json_data['id']))
         subscription = Follow(author=author, user=request.user)
         subscription.save()
-        return SUCCESS
+        return SUCCESS_POST
     return FAILURE
 
 
@@ -196,7 +197,7 @@ def subscription_delete(request, id):
         author = get_object_or_404(User, id=id)
         subscription = get_object_or_404(Follow, author=author, user=request.user)
         subscription.delete()
-        return SUCCESS
+        return SUCCESS_DELETE
     return FAILURE
 
 
@@ -207,7 +208,7 @@ def favorite_add(request):
         recipe = get_object_or_404(Recipe, id=int(json_data['id']))
         favorite = Favorite(user=request.user, recipe=recipe)
         favorite.save()
-        return SUCCESS
+        return SUCCESS_POST
     return FAILURE
 
 
@@ -217,7 +218,7 @@ def favorite_delete(request, id):
         recipe = get_object_or_404(Recipe, id=id)
         favorite = get_object_or_404(Favorite, user=request.user, recipe=recipe)
         favorite.delete()
-        return SUCCESS
+        return SUCCESS_DELETE
     return FAILURE
 
 
