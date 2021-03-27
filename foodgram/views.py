@@ -137,12 +137,11 @@ def shoplist_download(request):
     ).annotate(
         Sum('quantity')
     )
-    file_data = 'Список ингредиентов\n'
-    file_data += '\n'.join(
+    file_data = 'Список ингредиентов\r\n'
+    file_data += '\r\n'.join(
         [
             f"{i}. {x['ingredient__name']} ({x['ingredient__dimension']}) - {x['quantity__sum']}"
-            for i, x
-            in enumerate(shop_list, start=1)
+            for i, x in enumerate(shop_list, start=1)
         ]
     )
     response = HttpResponse(file_data, content_type='application/text charset=utf-8')
@@ -155,7 +154,7 @@ def purchase_add(request):
     if request.method == 'POST':
         json_data = json.loads(request.body)
         recipe = get_object_or_404(Recipe, id=int(json_data['id']))
-        purchase = ShopList(user=request.user, recipe=recipe)
+        purchase = ShopList.objects.create(user=request.user, recipe=recipe)
         purchase.save()
         return SUCCESS_POST
     return FAILURE
