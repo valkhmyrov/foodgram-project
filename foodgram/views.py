@@ -11,9 +11,9 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 
-from .extras import getting_tags, recipe_save, setting_all_tags
+from .extras import recipe_save, setting_all_tags
 from .forms import RecipeForm
-from .models import Favorite, Follow, Ingredient, QuantityOfIngredient, Recipe, ShopList, Tag
+from .models import Favorite, Follow, Ingredient, QuantityOfIngredient, Recipe, ShopList
 
 User = get_user_model()
 
@@ -24,8 +24,7 @@ FAILURE = JsonResponse({'success': False}, status=404)
 
 
 def index(request):
-    tags_all = Tag.objects.all()
-    tags = getting_tags(request, 'filter')
+    tags = request.existing_tags
     if not tags:
         return redirect(f"{reverse('index')}{setting_all_tags()}")
     recipes_list = Recipe.objects.get_additional_attributes(
@@ -41,7 +40,6 @@ def index(request):
     page = paginator.get_page(page_number)
     context = {
         'page': page,
-        'tags': tags_all
     }
     return render(request, 'foodgram/index.html', context)
 
@@ -56,8 +54,7 @@ def recipe_view(request, slug):
 
 def profile(request, username):
     author = get_object_or_404(User.objects.prefetch_related('follower'), username=username)
-    tags_all = Tag.objects.all()
-    tags = getting_tags(request, 'filter')
+    tags = request.existing_tags
     if not tags:
         return redirect(f"{reverse('profile', args=[author.username])}{setting_all_tags()}")
     recipes_list = Recipe.objects.filter(
@@ -79,7 +76,6 @@ def profile(request, username):
     context = {
         'author': author,
         'page': page,
-        'tags': tags_all
     }
     return render(request, 'foodgram/profile.html', context)
 
@@ -98,8 +94,7 @@ def follow_index(request):
 
 @login_required
 def favorites_index(request):
-    tags_all = Tag.objects.all()
-    tags = getting_tags(request, 'filter')
+    tags = request.existing_tags
     if not tags:
         return redirect(f"{reverse('favorites_index')}{setting_all_tags()}")
     favorites = Recipe.objects.filter(favorite_user__user=request.user).get_additional_attributes(
@@ -113,7 +108,7 @@ def favorites_index(request):
     if page_number and int(page_number) not in range(1, paginator.num_pages+1):
         return redirect(f"{reverse('favorites_index')}?filter={'&filter='.join(tags.values_list('title', flat=True))}")
     page = paginator.get_page(page_number)
-    context = {'page': page, 'tags': tags_all}
+    context = {'page': page}
     return render(request, 'foodgram/favorites.html', context)
 
 

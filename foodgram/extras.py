@@ -6,11 +6,6 @@ from foodgram_project.settings import SLUG_MAX_LENGTH, SLUG_MAX_TEXT_LENGTH
 from .models import Ingredient, QuantityOfIngredient, Recipe, Tag
 
 
-def getting_tags(request, tag_name):
-    tags = Tag.objects.filter(title__in=request.GET.getlist(tag_name))
-    return tags
-
-
 def setting_all_tags():
     get_parameters = f"?filter={'&filter='.join(Tag.objects.values_list('title', flat=True))}"
     return get_parameters
