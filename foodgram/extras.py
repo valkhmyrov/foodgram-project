@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404
 from django.utils.text import slugify
 
@@ -52,3 +53,9 @@ def recipe_save(request, form):
     QuantityOfIngredient.objects.bulk_create(data)
     form.save_m2m()
     return True
+
+
+def create_paginator(items_list, number_of_items, request):
+    paginator = Paginator(items_list, number_of_items)
+    page_number = request.GET.get('page')
+    return paginator, page_number

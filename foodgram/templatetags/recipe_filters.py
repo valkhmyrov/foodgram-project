@@ -1,7 +1,6 @@
 from django import template
 from django.utils.encoding import iri_to_uri
 
-
 register = template.Library()
 
 

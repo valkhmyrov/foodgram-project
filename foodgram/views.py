@@ -3,7 +3,6 @@ import json
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator
 from django.db.models import Sum
 from django.http import JsonResponse
 from django.http.response import HttpResponse
@@ -11,7 +10,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 
-from .extras import recipe_save, setting_all_tags
+from .extras import create_paginator, recipe_save, setting_all_tags
 from .forms import RecipeForm
 from .models import Favorite, Follow, Ingredient, QuantityOfIngredient, Recipe, ShopList
 
@@ -33,10 +32,9 @@ def index(request):
     ).distinct().select_related(
         'author'
     )
-    paginator = Paginator(recipes_list, settings.PAGINATOR_ITEMS)
-    page_number = request.GET.get('page')
+    paginator, page_number = create_paginator(recipes_list, settings.PAGINATOR_ITEMS, request)
     if page_number and int(page_number) not in range(1, paginator.num_pages+1):
-        return redirect(f"{reverse('index')}?filter={'&filter='.join(tags.values_list('title', flat=True))}")
+        return redirect(f"{reverse('index')}{request.current_filter}")
     page = paginator.get_page(page_number)
     context = {
         'page': page,
@@ -65,12 +63,10 @@ def profile(request, username):
     ).distinct().select_related(
         'author'
     )
-    paginator = Paginator(recipes_list, settings.PAGINATOR_ITEMS)
-    page_number = request.GET.get('page')
+    paginator, page_number = create_paginator(recipes_list, settings.PAGINATOR_ITEMS, request)
     if page_number and int(page_number) not in range(1, paginator.num_pages+1):
         return redirect(
-            f"{reverse('profile', args=[author.username])}?filter="
-            f"{'&filter='.join(tags.values_list('title', flat=True))}"
+            f"{reverse('profile', args=[author.username])}{request.current_filter}"
         )
     page = paginator.get_page(page_number)
     context = {
@@ -83,8 +79,7 @@ def profile(request, username):
 @login_required
 def follow_index(request):
     authors = request.user.follower.all()
-    paginator = Paginator(authors, settings.PAGINATOR_FOLLOW_ITEMS)
-    page_number = request.GET.get('page')
+    paginator, page_number = create_paginator(authors, settings.PAGINATOR_FOLLOW_ITEMS, request)
     if page_number and int(page_number) not in range(1, paginator.num_pages+1):
         return redirect(reverse('follow_index'))
     page = paginator.get_page(page_number)
@@ -103,10 +98,9 @@ def favorites_index(request):
     ).distinct().select_related(
         'author'
     )
-    paginator = Paginator(favorites, settings.PAGINATOR_ITEMS)
-    page_number = request.GET.get('page')
+    paginator, page_number = create_paginator(favorites, settings.PAGINATOR_ITEMS, request)
     if page_number and int(page_number) not in range(1, paginator.num_pages+1):
-        return redirect(f"{reverse('favorites_index')}?filter={'&filter='.join(tags.values_list('title', flat=True))}")
+        return redirect(f"{reverse('favorites_index')}{request.current_filter}")
     page = paginator.get_page(page_number)
     context = {'page': page}
     return render(request, 'foodgram/favorites.html', context)

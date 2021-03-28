@@ -20,6 +20,7 @@ class FoodgramTags:
                 tag['active'] = False
                 filters.append(tag['object'].title)
             tag['url'] = f"?filter={'&filter='.join(filters)}"
+        request.current_filter = f"?filter={'&filter='.join(existing_filters)}"
         request.existing_tags = existing_tags
         request.tags = self.tags
         response = self.get_response(request)
